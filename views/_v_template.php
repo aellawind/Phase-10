@@ -3,6 +3,9 @@
 <head>
 	<title><?php if(isset($title)) echo $title; ?></title>
 
+	<!--Displays the cute phase 10 icon in the browser-->
+	<link rel="shortcut icon" href="images/phase10.ico"/>
+	
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />	
 					
 	<!-- Controller Specific JS/CSS -->

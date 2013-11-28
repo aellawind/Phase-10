@@ -10,7 +10,7 @@ class index_controller extends base_controller {
 	} 
 		
 	/*-------------------------------------------------------------------------------------------------
-	Accessed via http://localhost/index/index/
+	Accessed via http://p3.amiraanuar.dev
 	-------------------------------------------------------------------------------------------------*/
 	public function index() {	
 		
@@ -19,7 +19,7 @@ class index_controller extends base_controller {
 			$this->template->content = View::instance('v_index_index');
 			
 		# Now set the <title> tag
-			$this->template->title = "Hello World";
+			$this->template->title = "Phase 10 by Amira";
 	
 		# CSS/JS includes
 			/*
