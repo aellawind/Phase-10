@@ -169,10 +169,7 @@ function startRound() {
     pbutton.style.display="none";
 }
 
-$("#playbutton").click(function() {
-    $('#playbutton').css('display', 'none');
-    
-})
+
 
 
 function pass() {
