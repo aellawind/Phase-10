@@ -1,3 +1,4 @@
+<script>
 // !!!!! Remember to fix all comments on this page
 
 // This is the constructor function to create the Card object
