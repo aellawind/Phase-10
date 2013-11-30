@@ -1,6 +1,20 @@
 .card {
-	background-image: url("images/cardback.png");
+	background-image: url("/images/backtest.gif");
 	width: 150px;
 	height: 213px;
+	float:left
+
 }
 
+.front {
+
+ 
+  float:left;
+}
+
+.cardface {
+
+
+  float:left;
+
+}

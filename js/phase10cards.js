@@ -1,12 +1,12 @@
-<script>
+
 // !!!!! Remember to fix all comments on this page
 
 // This is the constructor function to create the Card object
 
-function Card(rank, color) {
+function Card(rank, colors) {
 
 	this.rank = rank;
-	this.color = color;
+	this.colors = colors;
 
 	// Returns the value of the card as a text string
 	this.toString = cardToString;
@@ -16,87 +16,90 @@ function Card(rank, color) {
 
 function cardToString() {
 
-	var rank, color;
+	var cardRank, cardColor;
 
 	switch (this.rank) {
 		case "1" :
-			rank = "One";
+			cardRank = "One";
 			break;
 		case "2" :
-			rank = "Two";
+			cardRank = "Two";
 			break;
 		case "3" :
-			rank = "Three";
+			cardRank = "Three";
 			break;
 		case "4" :
-			rank = "Four";
+			cardRank = "Four";
 			break;
 		case "5" :
-			rank = "Five";
+			cardRank = "Five";
 			break;
 		case "6" :
-			rank = "Six";
+			cardRank = "Six";
 			break;
 		case "7" :
-			rank = "Seven";
+			cardRank = "Seven";
 			break;
 		case "8" :
-			rank = "Eight";
+			cardRank = "Eight";
 			break;
 		case "9" :
-			rank = "Nine";
+			cardRank = "Nine";
 			break;
 		case "10" :
-			rank = "Ten";
+			cardRank = "Ten";
 			break;
 		case "11" :
-			rank = "Eleven";
+			cardRank = "Eleven";
 			break;
 		case "12" :
-			rank = "Twelve";
+			cardRank = "Twelve";
 			break;
 		case "S" :
-			rank = "Skip";
-			break
-		case "W"
-			rank = "Wild";
-			break
+			cardRank = "Skip";
+			break;
+		case "W" :
+			cardRank = "Wild";
+			break;
 		default :
-			rank = null;
-			break
+			cardRank = null;
+			break;
 	}
 
-	switch (this.color) {
+	switch (this.colors) {
 		case "Y" :
-			suit = "Yellow";
+			cardColor = "Yellow";
 			break;
 		case "B" :
-			suit = "Blue"
+			cardColor = "Blue";
 			break;
 		case "G" :
-			suit = "Green"
+			cardColor = "Green";
 			break;
 		case "R" :
-			suit = "Red"
+			cardColor = "Red";
 			break;
-		case "X";
-			suit = "Special"
+		case "X":
+			cardColor = "Special";
+			break;
 		default :
-			suit = null;
+			cardColor = null;
 			break;
 	}
 
-	if (rank == null || color == null)
-		return "";
+	if (cardRank == null || cardColor == null)
+		return "NULL";
 
-	return rank + " of " + color;
+	return cardRank + " of " + cardColor;
 }
 
 /** 
 cardCreateNode(): Returns a DIV node which can be used to 
 display a card on a page.
+Pre load the images for faster loading time.
 **/
-var cardImg1yellow = new Image();  cardImgImg1yellow.src="/images/01yellow.png";
+
+var cardImg1yellow = new Image();  cardImg1yellow.src="/images/01yellow.png";
 var cardImg2yellow = new Image();  cardImg2yellow.src="/images/02yellow.png";
 var cardImg3yellow = new Image();  cardImg3yellow.src="/images/03yellow.png";
 var cardImg4blue = new Image();    cardImg4blue.src="/images/04blue.png";
@@ -114,29 +117,57 @@ var cardImg12yellow = new Image(); cardImg12yellow.src="/images/12yellow.png";
 
 function cardCreateNode() {
 
-	var cardNode, frontNode, indexNode, spotNode, tempNode, textNode;
-	var indexStr, spotChar;
-
-	// Build the front of the acrd
+	var cardNode, frontNode;
+	
+	// Build the front of the card
 
 	frontNode = document.createElement("DIV");
 	frontNode.className = "front";
-	
+	idCard = this.rank + this.colors;
+
 	// This is the main node, a DIV tag
 	cardNode = document.createElement("DIV");
 	cardNode.className = "card";
 
+	// For the image of the card
+	imgNode = document.createElement("IMG");
+	imgNode.className = "cardface";
 
 	// Get the proper image for the card suit and number
-	if (this.rank == "1" && this.color =="Y")
-		cardNode.src = "images/01yellow.png";
-	if (this.rank == "2" && this.color =="Y")
-		cardNode.src = "images02/yellow.png";
-	if (this.rank == "3" && this.color == "Y")
-		cardNode.src = "images/03yellow.png";
-	if (this.rank == "4" && this.color =="B")
-		cardNode.src = "images/04blue.png";
+	imgNode.src = "/images/12green.png";
+	if (this.rank == "1" && this.colors =="Y")
+		imgNode.src  = "/images/01yellow.png";
+	if (this.rank == "2" && this.colors =="Y")
+		imgNode.src  = "/images/02yellow.png";
+	if (this.rank == "3" && this.colors == "Y")
+		imgNode.src  = "/images/03yellow.png";
+	if (this.rank == "4" && this.colors =="B")
+		imgNode.src  = "/images/04blue.png";
+	if (this.rank == "5" && this.colors =="B")
+		imgNode.src  = cardImg5blue.src;
+	if (this.rank == "6" && this.colors =="B")
+		imgNode.src  = cardImg6blue.src;
+	if (this.rank == "7" && this.colors =="G")
+		imgNode.src  = cardImg7green.src;
+	if (this.rank == "8" && this.colors =="G")
+		imgNode.src  = cardImg7green.src;
+	if (this.rank == "9" && this.colors =="R")
+		imgNode.src  = cardImg9red.src;
+	if (this.rank == "10" && this.colors =="R")
+		imgNode.src  = cardImg10red.src;
+	if (this.rank == "11" && this.colors =="R")
+		imgNode.src  = cardImg11red.src;
+	if (this.rank == "12" && this.colors =="B")
+		imgNode.src  = cardImg12blue.src;
+	if (this.rank == "12" && this.colors =="R")
+		imgNode.src  = cardImg12red.src;
+	if (this.rank == "12" && this.colors =="G")
+		imgNode.src  = cardImg12green.src;
+	if (this.rank == "12" && this.colors =="Y")
+		imgNode.src  = cardImg12yellow.src;
 
+	frontNode.appendChild(imgNode);
+	cardNode.appendChild(frontNode);
 
 	return cardNode;
 }
@@ -154,27 +185,25 @@ function Stack() {
 	this.makeDeck = stackMakeDeck;
 	this.shuffle = stackShuffle;
 	this.deal = stackDeal;
-	this.draw = stackDraw;
 	this.addCard = stackAddCard;
 	this.combine = stackCombine;
 	this.cardCount = stackCardCount;
-
+	
 }
+
+
 
 // This function takes in an integer argument for the number of
 // Packs to include. For phase 10 rules it will be 8.
 function stackMakeDeck(n) {
 
-	var ranks = new Array("A", "2", "3", "4", "5", "6", "7", "8",
+	var ranks = new Array("1", "2", "3", "4", "5", "6", "7", "8",
 							"9", "10", "11", "12");
-	var suits = new Array("C", "D", "H", "S");
+	var suits = new Array("Y", "B", "G", "R", "X");
 
+	var m = ranks.length * suits.length;
 
-	// The length is based off of the suits and ranks as well as 
-	// n, the number of wilds per pack, and n*0.5, the number of skips.
-	var L = ranks.length * suits.length + n + n*0.5
-
-	// Set array of cards
+	// Set array of cards excluding Wilds and Skips
 	this.cards = new Array(n * m);
 
 	/**
@@ -183,19 +212,19 @@ function stackMakeDeck(n) {
 	then appends the skips and wilds.
 	**/
 	for (var i=0; i < n; i++)
-		for (var j=0; j < suits.length, j++)
-				for (var k=0; k < ranks.length, k++)
+		for (var j=0; j < suits.length; j++)
+				for (var k=0; k < ranks.length; k++)
 					this.cards[i*m+j*ranks.length + k] =
 						new Card(ranks[k], suits[j]);
 
-
+	
 	//Append the wilds
 	for (var l=0; l<n; l++)
-		this.cards.push(new Card["W", "X"]);
+		this.cards.push(new Card("W", "X"));
 
 	//Append the skips
-	for (var m=0; m<n*0.5)
-		this.cards.push(new Card["S", "X"])
+	for (var m=0; m<n*0.5; m++)
+		this.cards.push(new Card("S", "X"));
 
 
 }	
@@ -208,11 +237,11 @@ function stackMakeDeck(n) {
 
 	function stackShuffle(n) {
 
-		var a, b, c;
-		var tempt;
+		var i, j, k;
+		var temp;
 
-		for (var a=0; a<n;, a++)
-			for (var b=0; b<this.cards.length; b++) {
+		for (i=0; i<n; i++) {
+			for (j=0; j<this.cards.length; j++) {
 				k = Math.floor(Math.random() * this.cards.length);
 				temp = this.cards[j];
 				this.cards[j] = this.cards[k];
@@ -228,7 +257,7 @@ function stackMakeDeck(n) {
 	to the player.
 	**/
 
-	function stackDeal() {}
+	function stackDeal() {
 
 		if (this.cards.length > 0)
 			return this.cards.shift();
@@ -256,8 +285,11 @@ function stackMakeDeck(n) {
 
 	}
 
+	function stackCardCount() {
+
+    return this.cards.length;
+	}
 
 
 
-}
-</script>
+

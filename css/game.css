@@ -4,3 +4,79 @@ body {
   font-size: 14pt;
   text-align: center;
 }
+
+.error {
+  color:red;
+}
+
+/*---
+Deck draw discard station
+---*/
+
+#deckPiles {
+  width:100%;
+  height:300px;
+  background-color:white;
+}
+
+#drawDeck {
+  width: 155px;
+  height: 220px;
+  background-color:white;
+  border-style:solid;
+  border-color:red;
+  border-width:2px;
+  float:left;
+}
+
+#discardDeck {
+  width: 155px;
+  height: 220px;
+  background-color:white;
+  border-style:solid;
+  border-color:black;
+  border-width:2px;
+  float:left;
+}
+
+/*---
+Playing Fields
+---*/
+
+.playingField {
+  width:100%;
+  height:300px;
+  float:right;
+  position:relative;
+  overflow:hidden;
+}
+
+#computer1DivId {
+  background-color:orange;
+  float:right;
+}
+
+#computer2DivId {
+  background-color:yellow;
+  float:right;
+}
+
+#computer3DivId {
+  background-color:blue;
+  float:right;
+}
+
+#playerDivId {
+  background-color:#11F5F5;
+  float:right;
+}
+
+/*--
+Card
+---*/
+.card {
+  cursor:pointer;
+  position:relative;
+  top:0px;
+  left:0px;
+}

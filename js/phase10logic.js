@@ -1,55 +1,100 @@
 
 
-<script>
+$("document").ready(function () {
 
-$('.cardsDeck').click(function() {
+	// Globals
 
-	var new_card = $(this).clone();
+	var deck;
+	var player;
+	var computer1;
+	var computer2;
+	var computer3;
+	var numPacks = 8;
+	var numShuffles= 10;
+	
 
-	new_card.addClass('playerHand');
+	$("#playbutton").click(function() {
+	    $("#playbutton").css('display', 'none');
+	   
+	    // Initalize card deck
+		deck = new Stack();
+		newDeck();
 
-	// Place the card in the player's hand
-	$(#player0Cards).prepend(new_image);
+		// Create computer and player hands
+		computer1Stack = new Stack;
+		computer2Stack = new Stack;
+		computer3Stack = new Stack;
+		playerStack    = new Stack;
 
-}
+		var numCardsPerPlayer = 10;
+		var playerCards = new Array(numCardsPerPlayer);
+		var computer1Cards = new Array(numCardsPerPlayer);
+		var computer2Cards = new Array(numCardsPerPlayer);
+		var computer3Cards = new Array(numCardsPerPlayer);
 
+		var k = numCardsPerPlayer;
 
+		while (k > 0 && deck.cardCount() > 0) {
 
+			playerCards.push(deck.deal());
+			computer1Cards.push(deck.deal());
+			computer2Cards.push(deck.deal());
+			computer3Cards.push(deck.deal());
+			k--;
+		}
 
-// Constants
+		//just testing, delete later
+		 $("#errorthing").html('test');
 
-var numPacks = 8;
-var numShuffles = 10;
+		var playerCardStrings = "";
+        var computer1CardStrings = "";
+        var computer2CardStrings = "";
+        var computer3CardStrings = "";
 
-// Globals
+        _.each(playerCards, function(card) {
+            playerCardStrings += card.toString() + '\n';
+            playerStack.addCard(card);
+            node = card.createNode();
+            $('#playerDivId').append(node);
+        });
 
-var deck;
-var burnCard;
-var computer1;
-var computer2;
-var computer3;
-var player;
-var curPlayerHand;
-var curPlayerPhases;
+        _.each(computer1Cards, function(card) {
+            computer1CardStrings += card.toString() + '\n';
+            computer1Stack.addCard(card);
+            node = card.createNode();
+            $('#computer1DivId').append(node);
+        });
 
-// Initialize game on page load
+         _.each(computer2Cards, function(card) {
+            computer2CardStrings += card.toString() + '\n';
+            computer2Stack.addCard(card);
+            node = card.createNode();
+            $('#computer2DivId').append(node);
+        });
 
-window.onload = initGame;
+          _.each(computer3Cards, function(card) {
+            computer3CardStrings += card.toString() + '\n';
+            computer3Stack.addCard(card);
+            $('#computer3DivId').append( card.createNode() );
+        });
 
-function initGame() {
+        console.log('Your opponent1 was dealt these cards: \n\n' + computer1CardStrings);
+        console.log('Your opponent2 was dealt these cards: \n\n' + computer2CardStrings);
+        console.log('Your opponent3 was dealt these cards: \n\n' + computer3CardStrings);
+        console.log('You were dealt these cards: \n\n' + playerCardStrings);
+        console.log('opponentStack has [' + computer1Stack.cardCount() +'] cards\nplayerStack has [' + playerStack.cardCount() +'] cards');
 
-	// Initalize card deck
-	deck = new Stack();
-	newDeck();
+	    
 
-	// Create computer and player hands
-	computer1 = new Hand("computer1");
-	computer2 = new Hand("computer2");
-	computer3 = new Hand("computer3");
-	player    = new Hand("player");
+	})
 
+	function newDeck() {
 
-}
+		// Create a deck
+		deck.makeDeck(numPacks);
+		deck.shuffle(numShuffles);
+	}
+
 
 //Phase 10 hand object
 
@@ -61,12 +106,12 @@ function Hand(id) {
 
 	this.fieldNode = document.getElementById(id);
 	this.cardsNode = document.getElementById(id + "Cards");
-	this.scoreTextNode = document.getElementById(id+ "Score").firstChild;
+	//this.scoreTextNode = document.getElementById(id+ "Score").firstChild;
 	
 	this.reset = handReset;
 	this.addCard = handAddCard;
-	this.removeCard = handRemoveCard;
-	this.getScore = handGetScore;
+	//this.removeCard = handRemoveCard;
+	//this.getScore = handGetScore;
 	this.clearCards = handClearCards;
 
 	// Initialize as an empty hand
@@ -115,21 +160,18 @@ function handRemoveCard(card) {
 
 	// Remove the chosen card in the array and save it
 	// card = this.cards.pop();
-	pass;
+	//pass;
 	// Remove the card node from the display 
-	this.cardsNode.removeChild(this.cardsNode.lastChild);
+	//this.cardsNode.removeChild(this.cardsNode.lastChild);
 
 	// Return the card
-
-function checkPhase() {
-
-	pass;
 }
+
 
 function handClearCards() {
 	// Remove the card nodes in the associated card area
-	while (this.cardsNode.lastChild)
-		this.cardsNode.removeChild(this.cardsNode.lastChild)
+	//while (this.cardsNode.lastChild)
+		//this.cardsNode.removeChild(this.cardsNode.lastChild)
 
 }
 
@@ -160,85 +202,5 @@ function getNextCard() {
 	return deck.deal();
 }
 
+});
 
-
-
-
-function startRound() {
-    var pbutton = document.getElementById("playbutton");
-    pbutton.style.display="none";
-}
-
-
-
-
-function pass() {
-
-	var i;
-
-	// Reset everyone's hands
-	computer1.reset();
-	computer2.reset();
-	computer3.reset();
-	player.reset();
-
-	// If the burn card was reached, start a new deck
-	if (deck.cardCount() < burnCard) {
-		alert("New Deck.");
-		newDeck();
-	}
-
-	// Deal the cards
-	dealRound();
-
-	var x = document.getElementById("playbutton");
-	x.style.display = 'none';
-
-
-
-
-}
-
-function getCard() {
-
-	// If the player chooses to get a card from the top of the deck,
-	// this function deals it to them
-
-	switch(dealRound)
-	pass;	
-}
-
-function getDiscardCard() {
-
-	// Should the player choose to get a card from the top of the discard
-	// pile, this function takes it and gives it to them
-	if top card is not skip or wild!
-	pass;
-}
-
-function playRound() {
-
-	pass;
-
-}
-
-function addPhase() {
-
-	pass;
-}
-
-function show(){
-	if(document.layers) document.layers['mydiv'].visibility="show";
-	if(document.getElementById) document.getElementById("mydiv").style.visibility="visible";
-	if(document.all) document.all.mydiv.style.visibility="visible";
-}
-
-function hide(){
-	if(document.layers) document.layers['mydiv'].visibility="hide";
-	if(document.getElementById) document.getElementById("mydiv").style.visibility="hidden";
-	if(document.all) document.all.mydiv.style.visibility="hidden";
-}
-
-
-}
-</script>
