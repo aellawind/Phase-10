@@ -31,6 +31,8 @@ $("document").ready(function () {
     var computer2CardStrings = "";
     var computer3CardStrings = "";
 	
+	$('#phaseCompleteMessage').hide();
+
 	$("#playbutton").click(function() {
 	    $("#playbutton").css('display', 'none');
 	   
@@ -107,7 +109,8 @@ $("document").ready(function () {
         });
 
         $('#discardDeck').droppable({
-        accept:'.card',
+        //accept:'.card',
+        accept: '#playerDivId div',
         hoverClass: 'hovered',
         drop: handleCardDrop
     	});
@@ -128,11 +131,36 @@ $("document").ready(function () {
     		ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
     		ui.draggable.draggable('option', 'revert',  false);
 
+
     	}
+           
+	});
+
+	$('#submitPhase1').click(function() {
+
+		$('.card').draggable({
+        	revert:  true,
+        	stack: '#playerDivId div',   		
+        });
+
+		for(var i = 0; i <6; i++) {
+			$('<div></div>').data('number', i).appendTo('#phaseField').droppable( {
+
+				accept: '#playerDivId div',
+				hoverClass: 'hovered',
+				drop: handlePhaseCardDrop
+			});
+
+		}
 
 
-            
-
+    	function handlePhaseCardDrop(event,ui) {
+    		//if (something)
+    		//	ui.draggable.addClass('correct');
+    		//$(this).droppable('disable');
+    		ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
+    		ui.draggable.draggable('option', 'revert',  false);
+    	}
 
 
 	});

@@ -89,12 +89,7 @@ Playing Fields
   z-index:2;
 }
 
-#phaseField {
-  background-color:orange;
-  width:100%;
-  height:300px;
-  z-index:2;
-}
+
 
 /*--
 Card
@@ -104,6 +99,7 @@ Card
   position:relative;
   top:0px;
   left:0px;
+  z-index:5;
   /*background-image: url("/images/backtest.gif");*/
 }
 
@@ -121,3 +117,48 @@ Card
   box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
 
 }
+
+/*--
+Phases
+--*/
+#submitPhase1 {
+
+  background-color:white;
+}
+
+/*Individual cards slots for phases*/
+
+
+ 
+#phaseField {
+  width:100%;
+  height:300px;
+  background-color:white;
+
+
+}
+
+#phaseField div {
+  float: left;
+  width: 150px;
+  height: 213px;
+  padding-bottom: 0;
+  border: 2px solid #333;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  margin: 0 0 0 10px;
+  background: #fff;
+  border-style: dashed;
+  z-index:3;
+}
+
+
+
+
+
+
+
+
+
+

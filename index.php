@@ -19,9 +19,11 @@
 
 
 <h1>Phase 10</h1>
-<!-- Deck pick up and throw away -->
+
 
 <div id="gameArea">
+
+	<!-- Deck pick up and throw away -->
 	<div id="deckPiles">
 		<input id="playbutton" type="reset" value="Play!">
 		<br>
@@ -34,22 +36,38 @@
 		<span class='error' id='errorthing'></span>
 	</div>
 
-	<!-- Playing fields -->
+	<!-- Player playing fields -->
 	<div class="playingField" id="playerDivId">
-	Player<br>
+		Player!<br>
 	</div>
 
+	<!-- Section to click to submit a phase -->
+	<div id="submitPhase1" class="submitPhase">
+		Click to submit phase 1
+	</div>
+	
+	<!-- Section to play a phase -->
+	<div id="phaseField">
+		<br>
+
+		<div id="phaseCompleteMessage">
+		<h6>Phase Complete!</h6>
+		</div>
+	</div>
+
+	<!-- Computer playing fields -->
 	<div class="playingField" id="computer1DivId">
-	Computer 1 goes here<br>
+		Computer 1 goes here<br>
 	</div>
 
 	<div class="playingField" id="computer2DivId">
-	Computer 2 goes here<br>
+		Computer 2 goes here<br>
 	</div>
 
 	<div class="playingField" id="computer3DivId">
-	Computer 3 goes here<br>
+		Computer 3 goes here<br>
 	</div>
+
 </div>
 
 
