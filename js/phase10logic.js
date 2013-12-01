@@ -12,25 +12,31 @@ $("document").ready(function () {
 	var numPacks = 8;
 	var numShuffles= 10;
 	
+	// Create computer and player hands
+	computer1Stack = new Stack;
+	computer2Stack = new Stack;
+	computer3Stack = new Stack;
+	playerStack    = new Stack;
 
+	discardStack = new Stack;
+
+	var numCardsPerPlayer = 10;
+	var playerCards = new Array(numCardsPerPlayer);
+	var computer1Cards = new Array(numCardsPerPlayer);
+	var computer2Cards = new Array(numCardsPerPlayer);
+	var computer3Cards = new Array(numCardsPerPlayer);
+
+	var playerCardStrings = "";
+    var computer1CardStrings = "";
+    var computer2CardStrings = "";
+    var computer3CardStrings = "";
+	
 	$("#playbutton").click(function() {
 	    $("#playbutton").css('display', 'none');
 	   
 	    // Initalize card deck
 		deck = new Stack();
-		newDeck();
-
-		// Create computer and player hands
-		computer1Stack = new Stack;
-		computer2Stack = new Stack;
-		computer3Stack = new Stack;
-		playerStack    = new Stack;
-
-		var numCardsPerPlayer = 10;
-		var playerCards = new Array(numCardsPerPlayer);
-		var computer1Cards = new Array(numCardsPerPlayer);
-		var computer2Cards = new Array(numCardsPerPlayer);
-		var computer3Cards = new Array(numCardsPerPlayer);
+		newDeck();		
 
 		var k = numCardsPerPlayer;
 
@@ -46,10 +52,6 @@ $("document").ready(function () {
 		//just testing, delete later
 		 $("#errorthing").html('test');
 
-		var playerCardStrings = "";
-        var computer1CardStrings = "";
-        var computer2CardStrings = "";
-        var computer3CardStrings = "";
 
         _.each(playerCards, function(card) {
             playerCardStrings += card.toString() + '\n';
@@ -83,10 +85,65 @@ $("document").ready(function () {
         console.log('Your opponent3 was dealt these cards: \n\n' + computer3CardStrings);
         console.log('You were dealt these cards: \n\n' + playerCardStrings);
         console.log('opponentStack has [' + computer1Stack.cardCount() +'] cards\nplayerStack has [' + playerStack.cardCount() +'] cards');
-
+        console.log('stack is' + playerStack);
 	    
 
 	})
+
+	// When the player clicks the deck of cards he takes from 
+	// the top of the deck
+	$("#drawDeck").click(function() {
+
+		drawCard = deck.deal();
+		playerCards.push(drawCard);
+		playerCardStrings += drawCard.toString() + '\n';
+        playerStack.addCard(drawCard);
+        node = drawCard.createNode();
+        $('#playerDivId').append(node);
+
+        $('.card').draggable({
+        	revert:  true,
+        	stack: '#playerDivId div',   		
+        });
+
+        $('#discardDeck').droppable({
+        accept:'.card',
+        hoverClass: 'hovered',
+        drop: handleCardDrop
+    	});
+
+    	//If card is dropped to the correct slot,
+    	//Position it directly on top of the slot
+    	//And prevent it from being dragged again
+
+    	function handleCardDrop(event,ui) {
+    		// can get information on the card
+    		// by doing somthing like
+    		// var cardNumber = ui.draggable.data('number');
+    		// see elated.com article for more details
+
+    		ui.draggable.addClass('correct');
+    		ui.draggable.draggable('disable');
+    		//$(this).droppable('disable');
+    		ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
+    		ui.draggable.draggable('option', 'revert',  false);
+
+    	}
+
+
+            
+
+
+
+	});
+
+	// Discard a card
+	//$("cardface").click(function() {
+
+	//	discardCard = 
+	//	discardStack.push(discardCard);
+
+	//})
 
 	function newDeck() {
 

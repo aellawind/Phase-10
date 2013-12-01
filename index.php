@@ -16,36 +16,41 @@
 
 <body>
 
+
+
 <h1>Phase 10</h1>
 <!-- Deck pick up and throw away -->
-<div id="deckPiles">
-	<input id="playbutton" type="reset" value="Play!">
-	<br>
-	<div id="drawDeck">
+
+<div id="gameArea">
+	<div id="deckPiles">
+		<input id="playbutton" type="reset" value="Play!">
+		<br>
+		<div id="drawDeck">
+		Click to draw
+		</div>
+		<div id="discardDeck">
+		Deck goes here
+		</div>
+		<span class='error' id='errorthing'></span>
 	</div>
-	<div id="discardDeck">
+
+	<!-- Playing fields -->
+	<div class="playingField" id="playerDivId">
+	Player<br>
 	</div>
-	Deck goes here
-	<span class='error' id='errorthing'></span>
-</div>
 
-<!-- Playing fields -->
-<div class="playingField" id="computer1DivId">
-Computer 1 goes here<br>
-</div>
+	<div class="playingField" id="computer1DivId">
+	Computer 1 goes here<br>
+	</div>
 
-<div class="playingField" id="computer2DivId">
-Computer 2 goes here<br>
-</div>
+	<div class="playingField" id="computer2DivId">
+	Computer 2 goes here<br>
+	</div>
 
-<div class="playingField" id="computer3DivId">
-Computer 3 goes here<br>
+	<div class="playingField" id="computer3DivId">
+	Computer 3 goes here<br>
+	</div>
 </div>
-
-<div class="playingField" id="playerDivId">
-Player<br>
-</div>
-
 
 
 

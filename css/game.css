@@ -20,18 +20,20 @@ Deck draw discard station
 }
 
 #drawDeck {
-  width: 155px;
-  height: 220px;
-  background-color:white;
+  width: 150px;
+  height: 213px;
+  background-color:gray;
   border-style:solid;
   border-color:red;
   border-width:2px;
   float:left;
+  cursor:pointer;
+
 }
 
 #discardDeck {
-  width: 155px;
-  height: 220px;
+  width: 150px;
+  height: 213px;
   background-color:white;
   border-style:solid;
   border-color:black;
@@ -43,40 +45,79 @@ Deck draw discard station
 Playing Fields
 ---*/
 
+#gameArea {
+
+  background-color:gray;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
 .playingField {
   width:100%;
   height:300px;
   float:right;
   position:relative;
-  overflow:hidden;
+  z-index:2;
 }
 
 #computer1DivId {
   background-color:orange;
-  float:right;
+  width:100%;
+  height:300px;
+  z-index:2;
 }
 
 #computer2DivId {
   background-color:yellow;
-  float:right;
+  width:100%;
+  height:300px;
+  z-index:2;
 }
 
 #computer3DivId {
   background-color:blue;
-  float:right;
+  width:100%;
+  height:300px;
+  z-index:2;
 }
 
 #playerDivId {
   background-color:#11F5F5;
-  float:right;
+  width:100%;
+  height:300px;
+  z-index:2;
+}
+
+#phaseField {
+  background-color:orange;
+  width:100%;
+  height:300px;
+  z-index:2;
 }
 
 /*--
 Card
 ---*/
 .card {
-  cursor:pointer;
+  float:left;
   position:relative;
   top:0px;
   left:0px;
+  /*background-image: url("/images/backtest.gif");*/
+}
+
+
+.cardface {
+  cursor:pointer;
+  float:left;
+
+}
+
+
+.card.ui-draggable-dragging { 
+  -moz-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+  box-shadow: 0 0 .5em rgba(0, 0, 0, .8);
+
 }
