@@ -122,11 +122,13 @@ function cardCreateNode() {
 
 	frontNode = document.createElement("DIV");
 	frontNode.className = "front";
-	idCard = this.rank + this.colors;
+
+	idCard = this.colors + this.rank;
 
 	// This is the main node, a DIV tag
 	cardNode = document.createElement("DIV");
 	cardNode.className = "card";
+	cardNode.id = idCard;
 
 	// For the image of the card
 	imgNode = document.createElement("IMG");

@@ -138,7 +138,7 @@ Phases
 
 }
 
-#phaseField div {
+.phaseFieldDiv {
   float: left;
   width: 150px;
   height: 213px;
@@ -153,6 +153,11 @@ Phases
   z-index:3;
 }
 
+.phaseMsg {
+  font-family: Arial, Times, sans-serif;
+  font-size: 14pt;
+  float:left;
+}
 
 
 

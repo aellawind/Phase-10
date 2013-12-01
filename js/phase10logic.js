@@ -30,6 +30,7 @@ $("document").ready(function () {
     var computer1CardStrings = "";
     var computer2CardStrings = "";
     var computer3CardStrings = "";
+    var phaseDictionary = {};
 	
 	$('#phaseCompleteMessage').hide();
 
@@ -144,11 +145,15 @@ $("document").ready(function () {
         });
 
 		for(var i = 0; i <6; i++) {
-			$('<div></div>').data('number', i).appendTo('#phaseField').droppable( {
+			if (i ==0 || i == 3) {
+				$('<div>Set of 3</div>').attr('class', 'phaseMsg').appendTo('#phaseField')
+			}
+			$('<div></div>').data('number', i).attr('class', 'phaseFieldDiv').appendTo('#phaseField').droppable( {
 
 				accept: '#playerDivId div',
 				hoverClass: 'hovered',
 				drop: handlePhaseCardDrop
+				
 			});
 
 		}
@@ -158,8 +163,35 @@ $("document").ready(function () {
     		//if (something)
     		//	ui.draggable.addClass('correct');
     		//$(this).droppable('disable');
+    		var cardID = $(ui.draggable).attr("id");
+    		var cardNumber = cardID.slice(1);
+    		var cardColor = cardID[0];
+    		var draggedPlace = $(this).data('number');
+ 
+
+
+    		console.log('you just moved' + cardNumber + 'color of' + cardColor);
+    		
     		ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
     		ui.draggable.draggable('option', 'revert',  false);
+    		phaseDictionary[draggedPlace] = cardNumber;
+    		//phaseDictionary.key = draggedPlace;
+    		//phaseDictionary.val = cardID;
+  	
+  			console.log('This dictionary has values currently:');
+  			for (var i in phaseDictionary) {
+
+  				console.log('key:' + i + 'value:' + phaseDictionary[i]);
+  			}
+
+    		if (phaseDictionary[0] == phaseDictionary[1] && phaseDictionary[1] == phaseDictionary[2]) {
+    			if (phaseDictionary[3] == phaseDictionary[4] && phaseDictionary[4] == phaseDictionary[5]) {
+	    			ui.draggable.draggable('disable');
+	    			$(this).droppable('disable');
+	    			console.log('equal of' +phaseDictionary[0] +phaseDictionary[1]+phaseDictionary[2]);
+	    			$('#phaseCompleteMessage').show();
+	    		}
+	    	}
     	}
 
 
