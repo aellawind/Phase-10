@@ -128,6 +128,7 @@ function cardCreateNode() {
 	// This is the main node, a DIV tag
 	cardNode = document.createElement("DIV");
 	cardNode.className = "card";
+	cardNode.className += " sortable";
 	cardNode.id = idCard;
 
 	// For the image of the card

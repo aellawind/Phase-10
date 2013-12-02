@@ -42,8 +42,36 @@
 	</div>
 
 	<!-- Section to click to submit a phase -->
+	<!-- Will possibly move these buttons to go "Success! Pop up"-->
 	<div id="submitPhase1" class="submitPhase">
-		Click to submit phase 1
+		Click to submit phase 1: 2 sets of 3; remember to bump out cards when i try to drag them onto divs that already have one
+	</div>
+	<div id="submitPhase2" class="submitPhase">
+		Click to submit phase 2: 1 set of 3 and 1 run of 4
+	</div>
+	<div id="submitPhase3" class="submitPhase">
+		Click to submit phase 3: 1 set of 4 and 1 run of 4
+	</div>
+	<div id="submitPhase4" class="submitPhase">
+		Click to submit phase 4: 1 run of 7
+	</div>	
+	<div id="submitPhase5" class="submitPhase">
+		Click to submit phase 5: 1 run of 8
+	</div>
+	<div id="submitPhase6" class="submitPhase">
+		Click to submit phase 6: 1 run of 9
+	</div>
+	<div id="submitPhase7" class="submitPhase">
+		Click to submit phase 7: 2 sets of 4
+	</div>
+	<div id="submitPhase8" class="submitPhase">
+		Click to submit phase 8: 7 cards of one color
+	</div>
+	<div id="submitPhase9" class="submitPhase">
+		Click to submit phase 9: 1 set of 5 and 1 set of 2
+	</div>
+	<div id="submitPhase10" class="submitPhase">
+		Click to submit phase 10: 1 set of 5 and 1 set of 3
 	</div>
 	
 	<!-- Section to play a phase -->
@@ -52,6 +80,7 @@
 
 		<div id="phaseCompleteMessage">
 		<h6>Phase Complete!</h6>
+		<button onclick="playbutton()">Play Again</button>
 		</div>
 	</div>
 

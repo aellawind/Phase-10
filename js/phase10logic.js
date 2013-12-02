@@ -1,3 +1,5 @@
+//undo to this point!!!
+
 
 
 $("document").ready(function () {
@@ -20,85 +22,139 @@ $("document").ready(function () {
 
 	discardStack = new Stack;
 
-	var numCardsPerPlayer = 10;
-	var playerCards = new Array(numCardsPerPlayer);
-	var computer1Cards = new Array(numCardsPerPlayer);
-	var computer2Cards = new Array(numCardsPerPlayer);
-	var computer3Cards = new Array(numCardsPerPlayer);
+	//var numCardsPerPlayer = 10;
+	//var playerCards = new Array(numCardsPerPlayer);
+	//var computer1Cards = new Array(numCardsPerPlayer);
+	//var computer2Cards = new Array(numCardsPerPlayer);
+	//var computer3Cards = new Array(numCardsPerPlayer);
 
 	var playerCardStrings = "";
     var computer1CardStrings = "";
     var computer2CardStrings = "";
     var computer3CardStrings = "";
     var phaseDictionary = {};
+    var gamePlay = 'True';
+    var playerTurnOn = 'True';
 	
 	$('#phaseCompleteMessage').hide();
+	$('#phaseCompleteMessage').css( {
+	    left: '580px',
+	    top: '250px',
+	    width: 0,
+	    height: 0
+	  } );
+
+	for (var i=1; i<11;i++) {
+
+		phaseId = '#submitPhase' + i;
+		$(phaseId).hide();
+	}
+
 
 	$("#playbutton").click(function() {
 	    $("#playbutton").css('display', 'none');
-	   
+	   	$("#submitPhase1").css('display', 'block');
 	    // Initalize card deck
 		deck = new Stack();
 		newDeck();		
 
-		var k = numCardsPerPlayer;
+		var k = 10;
 
 		while (k > 0 && deck.cardCount() > 0) {
 
-			playerCards.push(deck.deal());
-			computer1Cards.push(deck.deal());
-			computer2Cards.push(deck.deal());
-			computer3Cards.push(deck.deal());
+			playerStack.addCard(deck.deal());
+			computer1Stack.addCard(deck.deal());
+			computer2Stack.addCard(deck.deal());
+			computer3Stack.addCard(deck.deal());
 			k--;
 		}
 
-		//just testing, delete later
-		 $("#errorthing").html('test');
+		console.log(playerStack);
+		console.log(playerStack.cards);
+		for(var c=0; c<10; c++) {
+			var pcard = playerStack.cards[c];
+			playerCardStrings += pcard.toString() + '\n';
+			node = pcard.createNode();
+			$('#playerDivId').append(node);
+
+			var c1card = computer1Stack.cards[c];
+			computer1CardStrings += c1card.toString() + '\n';
+			node = c1card.createNode();
+			$('#computer1DivId').append(node);
+
+			var c2card = computer2Stack.cards[c];
+			computer2CardStrings += c2card.toString() + '\n';
+			node = c2card.createNode();
+			$('#computer2DivId').append(node);
+
+			var c3card = computer3Stack.cards[c];
+			computer3CardStrings += c3card.toString() + '\n';
+			node = c3card.createNode();
+			$('#computer3DivId').append(node);
+
+			
+		}
+		
+
+    
 
 
-        _.each(playerCards, function(card) {
-            playerCardStrings += card.toString() + '\n';
-            playerStack.addCard(card);
-            node = card.createNode();
-            $('#playerDivId').append(node);
-        });
 
-        _.each(computer1Cards, function(card) {
-            computer1CardStrings += card.toString() + '\n';
-            computer1Stack.addCard(card);
-            node = card.createNode();
-            $('#computer1DivId').append(node);
-        });
-
-         _.each(computer2Cards, function(card) {
-            computer2CardStrings += card.toString() + '\n';
-            computer2Stack.addCard(card);
-            node = card.createNode();
-            $('#computer2DivId').append(node);
-        });
-
-          _.each(computer3Cards, function(card) {
-            computer3CardStrings += card.toString() + '\n';
-            computer3Stack.addCard(card);
-            $('#computer3DivId').append( card.createNode() );
-        });
 
         console.log('Your opponent1 was dealt these cards: \n\n' + computer1CardStrings);
         console.log('Your opponent2 was dealt these cards: \n\n' + computer2CardStrings);
         console.log('Your opponent3 was dealt these cards: \n\n' + computer3CardStrings);
         console.log('You were dealt these cards: \n\n' + playerCardStrings);
         console.log('opponentStack has [' + computer1Stack.cardCount() +'] cards\nplayerStack has [' + playerStack.cardCount() +'] cards');
-        console.log('stack is' + playerStack);
+
+
+
+    	while (gamePlay == 'True') {
+    		playerTurn();
+    		computer1Turn();
+    		computer2Turn();
+    		computer3Turn();
+    	}
+
 	    
 
-	})
+	});
+
+
+	function playerTurn() {
+		//while (PlayerTurnOn = 'True') {
+		//	console.log(playerStack.cardCount());
+		//	$( ".sortable" ).sortable({
+		//		stop: function(event, ui) {
+		  //      var index = ui.item.index()+1;
+		   //    console.log(index);}
+   			 //})
+	    	//$( ".sortable" ).disableSelection();
+    	//}
+
+	}
+
+	function computer1Turn() {
+		gamePlay = 'False';
+	}
+
+	function computer2Turn() {
+		
+	}
+
+	function computer3Turn() {
+		
+	}
+
+
+
 
 	// When the player clicks the deck of cards he takes from 
 	// the top of the deck
 	$("#drawDeck").click(function() {
 
 		drawCard = deck.deal();
-		playerCards.push(drawCard);
+		playerCards.addCard(drawCard);
 		playerCardStrings += drawCard.toString() + '\n';
         playerStack.addCard(drawCard);
         node = drawCard.createNode();
@@ -113,24 +169,26 @@ $("document").ready(function () {
         //accept:'.card',
         accept: '#playerDivId div',
         hoverClass: 'hovered',
-        drop: handleCardDrop
+        drop: handleCardDiscard
     	});
 
     	//If card is dropped to the correct slot,
     	//Position it directly on top of the slot
     	//And prevent it from being dragged again
 
-    	function handleCardDrop(event,ui) {
-    		// can get information on the card
-    		// by doing somthing like
-    		// var cardNumber = ui.draggable.data('number');
-    		// see elated.com article for more details
+    	function handleCardDiscard(event,ui) {
+    		// What happens when you discard a card
+    		// Get rid of it from the stack
+    		// Get rid of it from from the node thing
+    		// End the turn
 
-    		ui.draggable.addClass('correct');
     		ui.draggable.draggable('disable');
     		//$(this).droppable('disable');
     		ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
     		ui.draggable.draggable('option', 'revert',  false);
+
+    		playerTurnOn = 'False';
+    		alert('Your turn is over');
 
 
     	}
@@ -139,6 +197,7 @@ $("document").ready(function () {
 
 	$('#submitPhase1').click(function() {
 
+		$('.sortable').sortable({ disabled: true });
 		$('.card').draggable({
         	revert:  true,
         	stack: '#playerDivId div',   		
@@ -171,7 +230,8 @@ $("document").ready(function () {
 
 
     		console.log('you just moved' + cardNumber + 'color of' + cardColor);
-    		
+    		console.log(playerStack.cardCount());
+
     		ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
     		ui.draggable.draggable('option', 'revert',  false);
     		phaseDictionary[draggedPlace] = cardNumber;
@@ -182,17 +242,28 @@ $("document").ready(function () {
   			for (var i in phaseDictionary) {
 
   				console.log('key:' + i + 'value:' + phaseDictionary[i]);
+
   			}
 
-    		if (phaseDictionary[0] == phaseDictionary[1] && phaseDictionary[1] == phaseDictionary[2]) {
-    			if (phaseDictionary[3] == phaseDictionary[4] && phaseDictionary[4] == phaseDictionary[5]) {
+  			// Make sure it's not empty
+	    	if (phaseDictionary[0] != undefined && phaseDictionary[0] == phaseDictionary[1] && phaseDictionary[1] == phaseDictionary[2]) {
+	    		if (phaseDictionary[3] != undefined && phaseDictionary[3] == phaseDictionary[4] && phaseDictionary[4] == phaseDictionary[5]) {
 	    			ui.draggable.draggable('disable');
 	    			$(this).droppable('disable');
-	    			console.log('equal of' +phaseDictionary[0] +phaseDictionary[1]+phaseDictionary[2]);
+		   			console.log('equal of' +phaseDictionary[0] +phaseDictionary[1]+phaseDictionary[2]);
+
 	    			$('#phaseCompleteMessage').show();
+				    $('#phaseCompleteMessage').animate( {
+					      left: '380px',
+					      top: '200px',
+					      width: '400px',
+					      height: '100px',
+					      opacity: 1
+		    			});
+		    		}
 	    		}
 	    	}
-    	}
+    	
 
 
 	});
