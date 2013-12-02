@@ -44,12 +44,16 @@ $("document").ready(function () {
 	    height: 0
 	  } );
 
-	for (var i=1; i<11;i++) {
+	//for (var i=1; i<11;i++) {
+//
+//		phaseId = "'#submitPhase" + i + "'";
+///		console.log(phaseId);
+	//	$(phaseId).css('display','none');
+	//}
 
-		phaseId = '#submitPhase' + i;
-		$(phaseId).css('display','none');
-	}
-
+	$('#submitPhase2').css('display','none');
+	$('#submitPhase3').css('display','none');
+	$('#submitPhase4').css('display','none');
 
 	$("#playbutton").click(function() {
 	    $("#playbutton").css('display', 'none');
