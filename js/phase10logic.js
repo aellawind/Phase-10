@@ -47,7 +47,7 @@ $("document").ready(function () {
 	for (var i=1; i<11;i++) {
 
 		phaseId = '#submitPhase' + i;
-		$(phaseId).hide();
+		$(phaseId).css('display','none');
 	}
 
 
@@ -69,8 +69,10 @@ $("document").ready(function () {
 			k--;
 		}
 
-		console.log(playerStack);
-		console.log(playerStack.cards);
+		// The following iterates over the cards we've just dealt to each player
+		// It turns the cards into strings we can view in the console
+		// It also creates nodes for each card and appends the nodes
+		// to the respective divs for proper viewing!
 		for(var c=0; c<10; c++) {
 			var pcard = playerStack.cards[c];
 			playerCardStrings += pcard.toString() + '\n';
