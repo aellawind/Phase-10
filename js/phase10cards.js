@@ -13,6 +13,13 @@ function Card(rank, colors) {
 	this.createNode = cardCreateNode;
 }
 
+function newDeck() {
+
+		// Create a deck
+		deck.makeDeck(numPacks);
+		deck.shuffle(numShuffles);
+	}
+
 function cardToString() {
 
 	var cardRank, cardColor;
@@ -104,6 +111,7 @@ var cardImg3yellow = new Image();  cardImg3yellow.src="/images/03yellow.png";
 var cardImg4blue = new Image();    cardImg4blue.src="/images/04blue.png";
 var cardImg5blue = new Image();    cardImg5blue.src="/images/05blue.png";
 var cardImg6blue = new Image();    cardImg6blue.src="/images/06blue.png";
+var cardImg4green = new Image();   cardImg4green.src="/images/4green.png";
 var cardImg7green = new Image();   cardImg7green.src="/images/07green.png";
 var cardImg8green = new Image();   cardImg8green.src="/images/08green.png";
 var cardImg9red = new Image();     cardImg9red.src="/images/09red.png";
@@ -136,38 +144,16 @@ function cardCreateNode() {
 	imgNode.className = "cardface";
 
 	// Get the proper image for the card suit and number
-	imgNode.src = "/images/12green.png";
-	if (this.rank == "1" && this.colors =="Y")
-		imgNode.src  = "/images/01yellow.png";
-	if (this.rank == "2" && this.colors =="Y")
-		imgNode.src  = "/images/02yellow.png";
-	if (this.rank == "3" && this.colors == "Y")
-		imgNode.src  = "/images/03yellow.png";
-	if (this.rank == "4" && this.colors =="B")
-		imgNode.src  = "/images/04blue.png";
-	if (this.rank == "5" && this.colors =="B")
-		imgNode.src  = cardImg5blue.src;
-	if (this.rank == "6" && this.colors =="B")
-		imgNode.src  = cardImg6blue.src;
-	if (this.rank == "7" && this.colors =="G")
-		imgNode.src  = cardImg7green.src;
-	if (this.rank == "8" && this.colors =="G")
-		imgNode.src  = cardImg7green.src;
-	if (this.rank == "9" && this.colors =="R")
-		imgNode.src  = cardImg9red.src;
-	if (this.rank == "10" && this.colors =="R")
-		imgNode.src  = cardImg10red.src;
-	if (this.rank == "11" && this.colors =="R")
-		imgNode.src  = cardImg11red.src;
-	if (this.rank == "12" && this.colors =="B")
-		imgNode.src  = cardImg12blue.src;
-	if (this.rank == "12" && this.colors =="R")
-		imgNode.src  = cardImg12red.src;
-	if (this.rank == "12" && this.colors =="G")
-		imgNode.src  = cardImg12green.src;
-	if (this.rank == "12" && this.colors =="Y")
-		imgNode.src  = cardImg12yellow.src;
+	imgNode.src = "/images/4green.png";
+	// Yellow loop
+	
+	if (this.colors == null || this.rank == null)
+		return "NULL";
 
+	src_link = '/images/' + this.rank + this.colors + '.png';
+	imgNode.src = src_link;
+
+	
 	frontNode.appendChild(imgNode);
 	cardNode.appendChild(frontNode);
 

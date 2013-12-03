@@ -23,25 +23,7 @@
 
 <div id="gameArea">
 
-	<!-- Deck pick up and throw away -->
-
-	<div id="deckPiles">
-		<input id="playbutton" type="reset" value="Play!">
-		<input id="reset" type="reset" value="Reset">
-		<br>
-		<div id="drawDeck">
-		Click to draw from the deck
-		</div>
-		<div id="discardDeck">
-		</div>
-		<span class='error' id='errorthing'></span>
-	</div>
-
-	<!-- Player playing fields -->
-	<div class="playingField" id="playerDivId">
-		Player!<br>
-	</div>
-
+	
 	<!-- Section to click to submit a phase -->
 	<!-- Will possibly move these buttons to go "Success! Pop up"-->
 	<div id="submitPhase1" class="submitPhase">
@@ -75,9 +57,37 @@
 		Click to submit phase 10: 1 set of 5 and 1 set of 3
 	</div>
 	
+
+
+	<!-- Deck pick up and throw away -->
+
+	<div id="deckPiles">
+		<input id="playbutton" type="reset" value="Play!">
+		<input id="reset" type="reset" value="Reset">
+		<br>
+		<div id="drawDeck">
+		Click to draw from the deck
+		</div>
+		<div id="discardDeck">
+		</div>
+		<span class='error' id='errorthing'></span>
+	</div>
+
+	<!-- Player playing fields -->
+	<div class="playingField" id="playerDivId">
+		Player!<br>
+	</div>
+
 	<!-- Section to play a phase -->
 	<div id="phaseField">
 		<br>
+		<!--Section for first part of phase-->
+		<div id="phaseField1">sdfafd
+		</div>
+		<br>
+		<!--Section for second part of phase if it exists-->
+		<div id="phaseField2">asdfasfs
+		</div>
 
 		<div id="phaseCompleteMessage">
 		<h6>Phase Complete!</h6>
@@ -105,5 +115,6 @@
 <!-- JS Scripts -->
 <script src="js/phase10logic.js"></script>
 <script src="js/phase10cards.js"></script>
+<script src="js/phases.js"></script>
 </body>
 </html>
