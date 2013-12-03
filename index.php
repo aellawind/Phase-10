@@ -24,14 +24,15 @@
 <div id="gameArea">
 
 	<!-- Deck pick up and throw away -->
+
 	<div id="deckPiles">
 		<input id="playbutton" type="reset" value="Play!">
+		<input id="reset" type="reset" value="Reset">
 		<br>
 		<div id="drawDeck">
-		Click to draw
+		Click to draw from the deck
 		</div>
 		<div id="discardDeck">
-		Deck goes here
 		</div>
 		<span class='error' id='errorthing'></span>
 	</div>

@@ -25,20 +25,31 @@ Deck draw discard station
   background-color:gray;
   border-style:solid;
   border-color:red;
-  border-width:2px;
+  border-width:4px;
   float:left;
   cursor:pointer;
 
 }
 
 #discardDeck {
-  width: 150px;
+  width: 600px;
   height: 213px;
-  background-color:white;
   border-style:solid;
   border-color:black;
-  border-width:2px;
+  border-width:4px;
   float:left;
+  position:relative;
+}
+
+#coverDiscard {
+  width: 150px;
+  height: 213px;
+  position:absolute;
+  background-color:transparent;
+  position:relative;
+  visibility:hidden;
+  z-index:10000;
+
 }
 
 /*---

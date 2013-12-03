@@ -190,6 +190,7 @@ function Stack() {
 	this.addCard = stackAddCard;
 	this.combine = stackCombine;
 	this.cardCount = stackCardCount;
+	this.removeCard = stackRemoveCard;
 	
 }
 
@@ -262,10 +263,11 @@ function stackMakeDeck(n) {
 	function stackDeal() {
 
 		if (this.cards.length > 0)
-			return this.cards.shift();
+			return this.cards.pop();
 		else
 			return null;
 	}
+
 
 
 	/** 
@@ -292,6 +294,23 @@ function stackMakeDeck(n) {
     return this.cards.length;
 	}
 
+	function stackRemoveCard(cardNumber, cardColor) {
 
+		var cardIndex;
+		for (var i = 0; i < this.cards.length; i++) {
+				
+    		if (this.cards[i].rank == cardNumber && 
+    			this.cards[i].colors == cardColor ) {
+    				cardIndex = this.cards.indexOf(this.cards[i]);
+        			console.log('index is'+this.cards.indexOf(this.cards[i]));
+    		}
+		}
+		
+		var removedCard = new Card(cardNumber, cardColor);
+
+
+		return removedCard;
+
+	}
 
 

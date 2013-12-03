@@ -1,6 +1,7 @@
 //undo to this point!!!
 
 
+//http://www.jqueryscript.net/layout/Dynamic-Drag-Drop-Grid-Layout-Plugin-With-jQuery-Gridly.html
 
 $("document").ready(function () {
 
@@ -22,12 +23,6 @@ $("document").ready(function () {
 
 	discardStack = new Stack;
 
-	//var numCardsPerPlayer = 10;
-	//var playerCards = new Array(numCardsPerPlayer);
-	//var computer1Cards = new Array(numCardsPerPlayer);
-	//var computer2Cards = new Array(numCardsPerPlayer);
-	//var computer3Cards = new Array(numCardsPerPlayer);
-
 	var playerCardStrings = "";
     var computer1CardStrings = "";
     var computer2CardStrings = "";
@@ -35,6 +30,9 @@ $("document").ready(function () {
     var phaseDictionary = {};
     var gamePlay = 'True';
     var playerTurnOn = 'True';
+
+     
+
 	
 	$('#phaseCompleteMessage').hide();
 	$('#phaseCompleteMessage').css( {
@@ -44,16 +42,12 @@ $("document").ready(function () {
 	    height: 0
 	  } );
 
-	//for (var i=1; i<11;i++) {
-//
-//		phaseId = "'#submitPhase" + i + "'";
-///		console.log(phaseId);
-	//	$(phaseId).css('display','none');
-	//}
+	for (var i=1; i<11;i++) {
 
-	$('#submitPhase2').css('display','none');
-	$('#submitPhase3').css('display','none');
-	$('#submitPhase4').css('display','none');
+		phaseId = "#submitPhase" + i;
+		console.log(phaseId);
+		$(phaseId).css('display','none');
+	}
 
 	$("#playbutton").click(function() {
 	    $("#playbutton").css('display', 'none');
@@ -100,12 +94,8 @@ $("document").ready(function () {
 
 			
 		}
+
 		
-
-    
-
-
-
 
         console.log('Your opponent1 was dealt these cards: \n\n' + computer1CardStrings);
         console.log('Your opponent2 was dealt these cards: \n\n' + computer2CardStrings);
@@ -113,32 +103,17 @@ $("document").ready(function () {
         console.log('You were dealt these cards: \n\n' + playerCardStrings);
         console.log('opponentStack has [' + computer1Stack.cardCount() +'] cards\nplayerStack has [' + playerStack.cardCount() +'] cards');
 
+        
 
-
-    	while (gamePlay == 'True') {
-    		playerTurn();
-    		computer1Turn();
-    		computer2Turn();
-    		computer3Turn();
-    	}
-
-	    
-
+    	//while (gamePlay == 'True') {
+    	//	playerTurn();
+    	//	computer1Turn();
+    	//	computer2Turn();
+    	//	computer3Turn();
+    	//}
 	});
 
 
-	function playerTurn() {
-		//while (PlayerTurnOn = 'True') {
-		//	console.log(playerStack.cardCount());
-		//	$( ".sortable" ).sortable({
-		//		stop: function(event, ui) {
-		  //      var index = ui.item.index()+1;
-		   //    console.log(index);}
-   			 //})
-	    	//$( ".sortable" ).disableSelection();
-    	//}
-
-	}
 
 	function computer1Turn() {
 		gamePlay = 'False';
@@ -152,15 +127,48 @@ $("document").ready(function () {
 		
 	}
 
+	// The following resets so we can pretend like we're starting a new turn
+	$("#reset").click(function() {
 
+		draw_deck();
 
+	});
 
 	// When the player clicks the deck of cards he takes from 
 	// the top of the deck
-	$("#drawDeck").click(function() {
+	// Player must click this before their turn can start
+	// When the computers are 
+	
+	function draw_deck() {
 
-		drawCard = deck.deal();
-		playerCards.addCard(drawCard);
+		$("#drawDeck").unbind('click').one("click", function() {		
+			drawCard = deck.deal();
+			//console.log('The deck:');
+			//console.log(deck.cards);
+			startTurn(drawCard);
+			
+		});
+	}
+
+	draw_deck();
+
+
+	//$("#coverDiscard").click( function() {		
+	//	drawCard = discardStack.deal();	
+	//	startTurn(drawCard);
+
+	//	$("#coverDiscard").css('visibility', 'hidden');
+
+					
+	//	});
+	
+
+	
+
+
+	function startTurn(drawCard) {
+
+		console.log('before anything happens:');
 		playerCardStrings += drawCard.toString() + '\n';
         playerStack.addCard(drawCard);
         node = drawCard.createNode();
@@ -170,6 +178,11 @@ $("document").ready(function () {
         	revert:  true,
         	stack: '#playerDivId div',   		
         });
+
+        $('.card').css('position', 'relative');
+
+        console.log('after anything happens:');
+		console.log(playerStack.cards);
 
         $('#discardDeck').droppable({
         //accept:'.card',
@@ -188,18 +201,55 @@ $("document").ready(function () {
     		// Get rid of it from from the node thing
     		// End the turn
 
+    		var cardID = $(ui.draggable).attr("id");
+    		var cardNumber = cardID.slice(1);
+    		var cardColor = cardID[0];
+
+    		$(this).css('z-index','1');
+    		$(this).append(ui.draggable);
+    		$(ui.draggable).css('position', 'relative');
+    		$(ui.draggable).css('z-index', '100');
     		ui.draggable.draggable('disable');
     		//$(this).droppable('disable');
     		ui.draggable.position({ of: $(this), my: 'left top', at: 'left top' });
     		ui.draggable.draggable('option', 'revert',  false);
+ 
+ 			// remove
+    		var discardedCard = playerStack.removeCard(cardNumber, cardColor);
+    		discardStack.addCard(discardedCard);
+    
+    		$(ui.draggable).click(function() {
 
+    			$(ui.draggable).css('left', '0px');
+    			$(ui.draggable).css('top', '0px');
+
+				console.log('clicked');
+				id = '#' + $(this).attr('id');
+				ui.draggable.draggable('enable');
+				moveAnimate(id, '#playerDivId')
+				
+
+			});
+    		
     		playerTurnOn = 'False';
-    		alert('Your turn is over');
+    		alert('donesies'); // end turn!
 
+    		//function playerTurn() {
+		//while (PlayerTurnOn = 'True') {
+		//	console.log(playerStack.cardCount());
+		//	$( ".sortable" ).sortable({
+		//		stop: function(event, ui) {
+		  //      var index = ui.item.index()+1;
+		   //    console.log(index);}
+   			 //})
+	    	//$( ".sortable" ).disableSelection();
+    	//}
+
+	
 
     	}
            
-	});
+	}
 
 	$('#submitPhase1').click(function() {
 
@@ -288,6 +338,41 @@ $("document").ready(function () {
 		deck.makeDeck(numPacks);
 		deck.shuffle(numShuffles);
 	}
+
+
+	function moveAnimate(element, newParent){
+
+
+	    element = $(element); //Allow passing in either a JQuery object or selector
+	    newParent= $(newParent); //Allow passing in either a JQuery object or selector
+	    var oldOffset = element.offset();
+	    console.log('old offset' + oldOffset.left, oldOffset.top);
+	    //element.appendTo(newParent);
+	    newParent.append(element);
+	    var newOffset = element.offset();
+	    console.log('new offset' + newOffset.left, oldOffset.top);
+
+	    var temp = element.clone().appendTo('body');
+	    temp    .css('position', 'absolute')
+	            .css('left', oldOffset.left)
+	            .css('top', oldOffset.top)
+	            .css('zIndex', 1000);
+	    element.hide();
+	    temp.animate( {'top': newOffset.top, 'left':newOffset.left}, 'slow', function(){
+	       element.show();
+	       temp.remove();
+
+	    element.draggable({
+	        		revert:  true,
+	        		stack: '#playerDivId div',   		
+        });
+
+
+	    });
+	}
+
+
+
 
 
 //Phase 10 hand object
