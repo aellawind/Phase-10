@@ -18,11 +18,14 @@ function moveAnimate(element, newParent){
        element.show();
        temp.remove();
 
-    element.draggable({
-        		revert:  true,
-        		stack: '#playerDivId div',   		
-    });
+   // element.draggable({
+     //   		revert:  true,
+       // 		stack: '#playerDivId div',   		
+    //});
 
 });
 
 }
+
+
+   

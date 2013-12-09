@@ -112,11 +112,6 @@ function cardCreateNode() {
 
 	var cardNode, frontNode;
 	
-	// Build the front of the card
-
-	frontNode = document.createElement("DIV");
-	frontNode.className = "front";
-
 	idCard = this.colors + this.rank;
 
 	// This is the main node, a DIV tag
@@ -125,22 +120,22 @@ function cardCreateNode() {
 	cardNode.className += " sortable";
 	cardNode.id = idCard;
 
-	// For the image of the card
+	// For the image of the card, which is hidden until we need to see it
 	imgNode = document.createElement("IMG");
+	imgNode.height = "140";
+	imgNode.width = "100";
 	imgNode.className = "cardface";
+	imgNode.style.visibility = "hidden";
 
 	// Get the proper image for the card suit and number
-	imgNode.src = "/images/4green.png";
-
 	if (this.colors == null || this.rank == null)
 		return "NULL";
 
 	src_link = '/images/' + this.rank + this.colors + '.png';
 	imgNode.src = src_link;
 
+	cardNode.appendChild(imgNode);
 	
-	frontNode.appendChild(imgNode);
-	cardNode.appendChild(frontNode);
 
 	return cardNode;
 }
@@ -288,5 +283,94 @@ function stackClearCards() {
 	}
 
 }
+
+
+/** Preload Images For Faster Viewing Times **/
+
+
+   
+var cardPath = "/images/";
+var cardWidth = 100;
+var cardHeight = 140;
+
+var cardPics = new Array (
+    "cardback.png",
+    "1B.png",
+    "1G.png",
+    "1R.png",
+    "1Y.png",
+
+    "2B.png",
+    "2G.png",
+    "2R.png",
+    "2Y.png",
+
+    "3B.png",
+    "3G.png",
+    "3R.png",
+    "3Y.png",
+
+    "4B.png",
+    "4G.png",
+    "4R.png",
+    "4Y.png",
+
+    "5B.png",
+    "5G.png",
+    "5R.png",
+    "5Y.png",
+
+    "6B.png",
+    "6G.png",
+    "6R.png",
+    "6Y.png",
+
+    "7B.png",
+    "7G.png",
+    "7R.png",
+    "7Y.png",
+
+    "8B.png",
+    "8G.png",
+    "8R.png",
+    "8Y.png",
+
+    "9B.png",
+    "9G.png",
+    "9R.png",
+    "9Y.png",
+
+    "10B.png",
+    "10G.png",
+    "10R.png",
+    "10Y.png",
+
+    "11B.png",
+    "11G.png",
+    "11R.png",
+    "11Y.png",
+
+    "12B.png",
+    "12G.png",
+    "12R.png",
+    "12Y.png",
+
+    "SX.png",
+    "WX.png");
+
+var myPics = preloadImages (cardPath,cardPics,cardWidth,cardHeight);
+
+function preloadImages(path,pics,width,height) {
+
+    var images = new Array;
+
+    for (var picNum=0; picNum<pics.length; picNum++) {
+        images[picNum] = new Image(width,height);
+        images[picNum].src = (path + pics[picNum]);
+    }
+
+    return(images);
+}
+
 
 

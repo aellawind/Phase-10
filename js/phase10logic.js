@@ -37,6 +37,14 @@ $("document").ready(function () {
         newDeck();
         dealDeck(deck);
 
+        var drawCard = deck.deal();
+		discardStack.addCard(drawCard);
+		var node = drawCard.createNode();
+		node.firstChild.style.visibility = "";
+    	$('#discardDeck').append(node);
+    	$(node).click(takeDiscard);
+
+
         $("#drawDeck").unbind('click').one("click", function () {
             drawCard = deck.deal();
             startTurn(drawCard);
@@ -53,7 +61,7 @@ $("document").ready(function () {
     }
     
    	//test out my computers here
-   	runComputer();
+   	//runComputer();
 
 
     });
@@ -70,11 +78,23 @@ $("document").ready(function () {
 
 });
 
+function takeDiscard() {
+
+    console.log('clicked');
+    $(this).off( "click");
+    $(this).css('left', '0px');
+    $(this).css('top', '0px');
+    id = '#' + $(this).attr('id');
+    moveAnimate(id, '#playerDivId')
+    $('#discardLockScreen').css('display', 'block');
+
+}
+
 // Create a player object to keep track of the current phase and the score
 function Player() {
 
-	this.current_phase = 6
-	this.score = 0
+	this.current_phase = 1;
+	this.score = 0;
 }
 
 // Deals out the deck to the playeers
@@ -99,6 +119,7 @@ function dealDeck(deck) {
     for (var c = 0; c < 10; c++) {
         var pcard = playerStack.cards[c];
         node = pcard.createNode();
+        node.firstChild.style.visibility = "";
         $('#playerDivId').append(node);
 
         var c1card = computer1Stack.cards[c];
@@ -123,9 +144,16 @@ function startTurn(drawCard) {
     console.log('turn started');
     playerStack.addCard(drawCard);
     node = drawCard.createNode();
+    node.firstChild.style.visibility = "";
     $('#playerDivId').append(node);
 
  
+}
+
+function revertBack() {
+
+	$('#playerDivId').append(node);
+	return true;
 }
 
 function discardCardEndTurn() {
@@ -133,7 +161,7 @@ function discardCardEndTurn() {
     alert('Drag a card to the discard pile to end your turn!');
    
     $('.card').draggable({
-    	revert: true,
+    	revert: revertBack,
     	stack: '#playerDivId div',
     });
 
@@ -260,6 +288,7 @@ function nextRound() {
 
 function runComputer() {
 
+	$('#screen').show();
 	//todo: insert animate from draw pile to their stack of cards
 
 	console.log(computer1.current_phase);
@@ -269,15 +298,23 @@ function runComputer() {
 	computer1Stack.addCard(drawCard);
 
 	// Check to see if the computer can play any phases
-	checkComputerCards(computer1Stack.cards, computer1.current_phase);
+	computer_phase1function(computer1Stack.cards);
 
 	// Discard a card and end the computer's turn
-	var discardedCard = playerStack.removeCard(cardNumber, cardColor);
-    discardStack.addCard(discardedCard);
-    var node = discardedCard.createNode();
-    $('#discardDeck').append(node);
+	//var discardedCard = playerStack.removeCard(cardNumber, cardColor);
+    //discardStack.addCard(discardedCard);
+    //var node = discardedCard.createNode();
+    //$('#discardDeck').append(node);
 
 	//todo:animate a card to the discard pile
+}
+
+var computer_phase1function = function(phase_cards) {
+    // Should be set of 3
+    var matched_counter = identicalCards(phase_cards);
+    var num_sets = Object.keys(matched_counter).length;
+    var longest_set;
+
 }
 
 

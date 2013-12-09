@@ -278,7 +278,12 @@ function checkPhase(user_phase, phase_cards) {
 function makeMatches(cards) {
 
     var num_to_match;
-    set_cards = cards.slice(0); // Test on a new array so we don't modify the originals
+    // Test on a new array so we don't modify the originals
+    var set_cards = new Array();
+    for(i=0; i<cards.length;i++) {
+        set_cards.push(new Card(cards[i].rank, cards[i].colors));
+    }
+
     for (i=0; i < set_cards.length; i++) {
         //console.log(set_cards[i]);
         //console.log("Card rank is" + set_cards[i].rank);
@@ -290,7 +295,7 @@ function makeMatches(cards) {
 
     // Just in case the user has ALL wilds in his match array
     if (num_to_match == null) {
-        num_to_match = 1;
+        num_to_match = "1";
     }
    
     for (i=0; i < set_cards.length; i++) {
@@ -304,19 +309,52 @@ function makeMatches(cards) {
     
 }
 
+function makeColor(cards) {
+
+    var color_to_match;
+    // Test on a new array so we don't modify the originals
+    var set_cards = new Array();
+    for(i=0; i<cards.length;i++) {
+        set_cards.push(new Card(cards[i].rank, cards[i].colors));
+    }
+
+    for (i=0; i < set_cards.length; i++) {
+        //console.log(set_cards[i]);
+        //console.log("Card rank is" + set_cards[i].rank);
+        if (set_cards[i].rank != "W") {
+            color_to_match = set_cards[i].colors;
+            break;
+        }
+    }
+
+    // Just in case the user has ALL wilds in his match array
+    if (color_to_match == null) {
+        color_to_match = "B";
+    }
+   
+    for (i=0; i < set_cards.length; i++) {
+        if (set_cards[i].rank == "W") {
+            //console.log("Card rank befores" + set_cards[i].rank);
+            set_cards[i].rank = num_to_match;
+            //console.log("Card rank afters" + set_cards[i].rank);
+        }
+    }
+    return set_cards;
+    
+}
 
 // Looks for wilds in a supposedly consecutive set of numbers and if they exist
 // Then this function changes them to be consecutive
-function makeRuns(test) {
+function makeRuns(cards) {
 
         // Test on a new array so we don't modify the originals
         var set_cards = new Array();
         var has_only_wilds = "True"; 
-        for(i=0; i<test.length;i++) {
-            if (test[i].rank != "W") {
+        for(i=0; i<cards.length;i++) {
+            if (cards[i].rank != "W") {
                 has_only_wilds = "False";
             }
-            set_cards.push(new Card(test[i].rank, test[i].colors));
+            set_cards.push(new Card(cards[i].rank, cards[i].colors));
         }
 
         // Normal people won't play all wilds in a sequence, but just in case...
@@ -538,15 +576,15 @@ var phase10function = function(phase_cards) {
 
 // BELOW IS THE COMPUTER LOGIC
 
-/ Function that takes in an array of cards and evaluates if they are a phase (1-10)
+// Function that takes in an array of cards and evaluates if they are a phase (1-10)
 // phase_cards is an array; assumes we have an array of cards and each card has card.rank = # and card.suit = color
 // When cards go into this function, we still have wilds we need to 'clean'
-function checkPhase(user_phase, phase_cards) {
+function checkComputerPhase(computer_phase, cards) {
     var phaseFunction;
-    switch (user_phase) {
+    switch (computer_phase) {
 
-        // 2 Sets of 3
         case 1:
+            
             phaseFunction = phase1function(phase_cards);
             break;            
         case 2:
@@ -587,10 +625,28 @@ function checkPhase(user_phase, phase_cards) {
     }
 }
 
+/*
+var computer_phase1function = function(phase_cards) {
+    // Should be set of 3
+    var matched_counter = identicalCards(phase_cards);
+    var num_sets = Object.keys(matched_counter).length;
+    var longest_set;
 
 
 
 
+    if (num_sets_1 == 1 && first_set.length > 2 &&
+        num_sets_2 == 1 &&  second_set.length > 2) {
+            
+            console.log("Phase 1 function is true");
+            return "True";
+        }
+    else {
+        return "False";
+    }
+}
 
+
+*/
 
 

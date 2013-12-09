@@ -7,6 +7,7 @@
 	
 	<link rel="stylesheet" href="css/cards.css" type="text/css">
 	<link rel="stylesheet" href="css/game.css" type="text/css">
+	<link href='http://fonts.googleapis.com/css?family=Purple+Purse' rel='stylesheet' type='text/css'>
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
@@ -19,6 +20,7 @@
 <!-- do-not-click screen; activated when we don't want the user to be able to click on anything -->
 <div id='screen'></div>
 
+<div id="wrapper">
 <h1>Phase 10</h1>
 
 
@@ -29,6 +31,20 @@
 		<h6>Phase Complete!</h6>
 		<button onclick="nextRound()">Play Next Phase!</button>
 	</div>
+
+	<!-- Computer playing fields -->
+	<div class="playingField" id="computer1DivId">
+		Computer 1 goes here<br>
+	</div>
+
+	<div class="playingField" id="computer2DivId">
+		Computer 2 goes here<br>
+	</div>
+
+	<div class="playingField" id="computer3DivId">
+		Computer 3 goes here<br>
+	</div>
+
 	
 	<!-- Section to click to submit a phase -->
 	<!-- Will possibly move these buttons to go "Success! Pop up"-->
@@ -69,9 +85,7 @@
 		<input id="playbutton" type="reset" value="Play!">
 		<input id="discardbutton" type="button" value="Discard Card and End Turn">
 		<input id="submitPhase1" type="button" class="prepareSubmitPhase" value="Submit Your Phase">
-		<div id="drawDeck">
-		Click to draw from the deck
-		</div>
+		<div id="drawDeck"></div>
 		<div id="discardDeck">
 			<div id="discardLockScreen">
 			</div>
@@ -87,6 +101,9 @@
 	<!-- Section to play a phase -->
 	<div id="phaseField">
 		<br>
+		<input id="submitphasebutton" type = "button" value="Submit Your Phase!">
+		<input id="resetphasebutton" type="button" value="Reset Phase Cards!">
+		<input id="cancelphasebutton" type = "button" value="Cancel Submit Phase">
 		<!--Section for first part of phase-->
 		<div id="phaseField1">
 			<span class="phaseTitles" id="phase1Title1">Set of 3</span>
@@ -100,7 +117,6 @@
 			<span class="phaseTitles" id="phase9Title1">Set of 5</span>
 			<span class="phaseTitles" id="phase10Title1">Set of 5</span>
 		</div>
-		<br>
 		<!--Section for second part of phase if it exists-->
 		<div id="phaseField2">
 			<span class="phaseTitles" id="phase1Title2">Set of 3</span>
@@ -111,23 +127,10 @@
 			<span class="phaseTitles" id="phase10Title2">Set of 3</span>
 		</div>
 
-		<input id="submitphasebutton" type = "button" value="Submit Your Phase!">
-		<input id="resetphasebutton" type="button" value="Reset Phase Cards!">
-		<input id="cancelphasebutton" type = "button" value="Cancel Submit Phase">
+		
 		
 	</div>
 
-	<!-- Computer playing fields -->
-	<div class="playingField" id="computer1DivId">
-		Computer 1 goes here<br>
-	</div>
-
-	<div class="playingField" id="computer2DivId">
-		Computer 2 goes here<br>
-	</div>
-
-	<div class="playingField" id="computer3DivId">
-		Computer 3 goes here<br>
 	</div>
 
 </div>

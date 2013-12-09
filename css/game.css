@@ -1,8 +1,70 @@
 body {
   background-color: #98AFC7;
+  background: url('/images/goldback.jpg');
   font-family: Arial, Times, sans-serif;
   font-size: 14pt;
   text-align: center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  overflow:scroll;  
+
+}
+
+#wrapper {
+  width:1200px;
+  height:900px;
+  position:absolute;
+  left:50%;
+  top:50%;
+  margin:-450px 0 0 -600px;
+  z-index:1;
+
+}
+
+
+#gameArea {
+width:1200px;
+height:800px;
+position:absolute;
+left:50%;
+top:50%;
+margin:-390px 0 0 -600px;
+padding: 15px;
+border:0px;
+background:rgba(255,255,255, 0.8);
+background-origin:border-box;
+-moz-box-shadow: 30px 30px 95px #000000;
+-webkit-box-shadow: 30px 30px 95px #000000;
+box-shadow: 20px 20px 85px #000000;
+z-index:1;
+}
+
+h1 {
+    font-family: 'Purple Purse', cursive;
+    font-weight:bold;
+    margin:0 -13px 0 0;
+    font-style:italic;
+    font-variant:small-caps;
+    text-decoration: none;
+    word-spacing: normal;
+    text-align: center;
+    letter-spacing: 0;
+    font-size: 45pt;
+    color: #B80000 ;
+    text-shadow: 0 1px 0 #ccc, 
+               0 2px 0 #c9c9c9,
+               0 3px 0 #bbb,
+               0 4px 0 #b9b9b9,
+               0 5px 0 #aaa,
+               0 6px 1px rgba(0,0,0,.1),
+               0 0 5px rgba(0,0,0,.1),
+               0 1px 3px rgba(0,0,0,.3),
+               0 3px 5px rgba(0,0,0,.2),
+               0 5px 10px rgba(0,0,0,.25),
+               0 10px 10px rgba(0,0,0,.2),
+               0 20px 20px rgba(0,0,0,.15);
 }
 
 .error {
@@ -14,7 +76,6 @@ body {
   position:fixed;
   width:100%;
   height:100%;
-  background-color:orange;
   opacity:0;
   z-index:9999;
 }
@@ -24,55 +85,63 @@ Deck draw discard station
 ---*/
 
 #deckPiles {
-  width:100%;
-  height:300px;
-  background-color:white;
+  width:250px;
+  height:200px;
+  right:10px;
+  bottom:10px;
+  position:absolute;
+
 }
 
 #drawDeck {
-  width: 144px;
-  height: 207px;
-  background-color:gray;
-  border-style:solid;
-  border-color:red;
-  border-width:4px;
+  width: 100px;
+  height: 140px;
+  background: url('/images/cardback.png');
+  background-size:100px 140px;
   float:left;
   cursor:pointer;
-
+  right:10px;
+  bottom:15px;
+  position:absolute;
 }
 
 #discardDeck {
-  width: 144px;
-  height: 207px;
-  border-style:solid;
-  border-color:black;
-  border-width:4px;
+  width: 100px;
+  height: 140px;
+  border-width:1px;
   float:left;
-  position:relative;
+  position:absolute;
+  right:110px;
+  bottom:15px;
 }
 
 #discardLockScreen {
-  width: 144px;
-  height: 207px;
+  width: 100px;
+  height: 140px;
   float:left;
   position:absolute;
   display:none;
   z-index:3000;
-  background-color:blue;
 }
 
+#playbutton {
+  float:left;
+}
+
+.prepareSubmitPhase {
+  float:left;
+  display:none;
+}
+
+#discardbutton {
+  float:left;
+  display:none;
+}
 
 /*---
 Playing Fields
 ---*/
 
-#gameArea {
-
-  background-color:gray;
-  width:100%;
-  height:100%;
-  z-index:1;
-}
 
 .playingField {
   width:100%;
@@ -83,31 +152,48 @@ Playing Fields
 }
 
 #computer1DivId {
-  background-color:orange;
-  width:100%;
-  height:300px;
+
+  width:400px;
+  height:170px;
   z-index:2;
+  position:relative;
+ 
 }
 
 #computer2DivId {
-  background-color:yellow;
-  width:100%;
-  height:300px;
+
+  width:400px;
+  height:170px;
   z-index:2;
+  position:relative;
 }
 
 #computer3DivId {
-  background-color:blue;
-  width:100%;
-  height:300px;
+
+  width:400px;
+  height:170px;
   z-index:2;
+  position:relative;
+}
+
+#computer1DivId div, #computer2DivId div, #computer3DivId div {
+
+  margin-right:-73px;
 }
 
 #playerDivId {
-  background-color:#11F5F5;
-  width:100%;
-  height:300px;
+ 
+  width:1000px;
+  height:170px;
   z-index:2;
+  left:10px;
+  bottom:30px;
+  position:absolute;
+
+}
+
+#playerDivId div {
+  margin-right:-17px;
 }
 
 
@@ -116,11 +202,14 @@ Playing Fields
 Card
 ---*/
 .card {
+  background-image: url('/images/cardback.png');
+  background-size:100px 140px;
   float:left;
   position:relative;
   top:0px;
-  left:0px;
-  z-index:5;
+  z-index:30;
+  border:1px;
+
   /*background-image: url("/images/backtest.gif");*/
 }
 
@@ -146,14 +235,7 @@ Phases
 .phaseTitles {
   display:none;
 }
-.prepareSubmitPhase {
-  display:none;
-}
 
-#discardbutton {
-
-  display:none;
-}
 
 /*Individual cards slots for phases*/
 
@@ -162,41 +244,52 @@ Phases
 #phaseField {
   width:100%;
   background-color:white;
-  position:relative;
+  position:absolute;
+  bottom: 210px;
   display:none;
-  height:600px;
-  margin-top:300px;
+  height:200px;
   z-index:1;
 
 }
 
 #phaseField1 {
-  width:100%;
-  background-color:white;
-  height: 300px;
+  width:50%;
+  height: 200px;
   z-index:1;
+  float:left;
+  position:relative;
+  padding-left:10px;
 }
 
 #phaseField2 {
-  width:100%;
-  height:300px;
-  background-color:white;
+  width:48%;
+  height:200px;
   z-index:1;
+  float:left;
+  position:relative;
+  background-color:blue;
+}
+
+#phaseField1 div, #phaseField2 div {
+  margin-right:-60px;
 }
 
 #submitphasebutton {
   position: absolute; bottom:25px; right:25px;
   display:none;
+  z-index:2;
 }
 
 #cancelphasebutton {
   position: absolute; bottom:73px; right:25px;
   display:none;
+  z-index:2;
 }
 
 #resetphasebutton {
   position: absolute; bottom:49px; right:25px;
   display:none;
+  z-index:2;
 }
 
 
