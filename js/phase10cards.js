@@ -1,4 +1,6 @@
 // !!!!! Remember to fix all comments on this page
+// Remember to pre load the images for faster loading
+// Remember to make wild and skip cards
 
 // This is the constructor function to create the Card object
 
@@ -105,22 +107,6 @@ display a card on a page.
 Pre load the images for faster loading time.
 **/
 
-var cardImg1yellow = new Image();  cardImg1yellow.src="/images/01yellow.png";
-var cardImg2yellow = new Image();  cardImg2yellow.src="/images/02yellow.png";
-var cardImg3yellow = new Image();  cardImg3yellow.src="/images/03yellow.png";
-var cardImg4blue = new Image();    cardImg4blue.src="/images/04blue.png";
-var cardImg5blue = new Image();    cardImg5blue.src="/images/05blue.png";
-var cardImg6blue = new Image();    cardImg6blue.src="/images/06blue.png";
-var cardImg4green = new Image();   cardImg4green.src="/images/4green.png";
-var cardImg7green = new Image();   cardImg7green.src="/images/07green.png";
-var cardImg8green = new Image();   cardImg8green.src="/images/08green.png";
-var cardImg9red = new Image();     cardImg9red.src="/images/09red.png";
-var cardImg10red = new Image();    cardImg10red.src="/images/10red.png";
-var cardImg11red = new Image();    cardImg11red.src="/images/11red.png";
-var cardImg12blue = new Image();   cardImg12blue.src="/images/12blue.png";
-var cardImg12green = new Image();  cardImg12green.src="/images/12green.png";
-var cardImg12red = new Image();    cardImg12red.src="/images/12red.png";
-var cardImg12yellow = new Image(); cardImg12yellow.src="/images/12yellow.png";
 
 function cardCreateNode() {
 
@@ -145,8 +131,7 @@ function cardCreateNode() {
 
 	// Get the proper image for the card suit and number
 	imgNode.src = "/images/4green.png";
-	// Yellow loop
-	
+
 	if (this.colors == null || this.rank == null)
 		return "NULL";
 
@@ -160,6 +145,7 @@ function cardCreateNode() {
 	return cardNode;
 }
 
+// The following defines everything relevant to the stack, which is an array of cards
 
 function Stack() {
 
@@ -169,7 +155,6 @@ function Stack() {
 	// Other stacks
 
 	this.cards = new Array();
-
 	this.makeDeck = stackMakeDeck;
 	this.shuffle = stackShuffle;
 	this.deal = stackDeal;
@@ -177,18 +162,19 @@ function Stack() {
 	this.combine = stackCombine;
 	this.cardCount = stackCardCount;
 	this.removeCard = stackRemoveCard;
+	this.clearCards = stackClearCards;
 	
 }
 
 
 
 // This function takes in an integer argument for the number of
-// Packs to include. For phase 10 rules it will be 8.
+// Packs to include. For phase 10 rules it will be 2.
 function stackMakeDeck(n) {
 
 	var ranks = new Array("1", "2", "3", "4", "5", "6", "7", "8",
 							"9", "10", "11", "12");
-	var suits = new Array("Y", "B", "G", "R", "X");
+	var suits = new Array("Y", "B", "G", "R");
 
 	var m = ranks.length * suits.length;
 
@@ -208,95 +194,99 @@ function stackMakeDeck(n) {
 
 	
 	//Append the wilds
-	for (var l=0; l<n; l++)
+	for (var l=0; l<n*4; l++)
 		this.cards.push(new Card("W", "X"));
 
 	//Append the skips
-	for (var m=0; m<n*0.5; m++)
+	for (var m=0; m<n*2; m++)
 		this.cards.push(new Card("S", "X"));
 
 
 }	
 
-	/** 
-	This is the shuffle method that randomizes the order of the cards n times.
-	For each shuffle it loops through every card in the array and swaps it with
-	another card randomly selected from the array.
-	**/
+/** 
+This is the shuffle method that randomizes the order of the cards n times.
+For each shuffle it loops through every card in the array and swaps it with
+another card randomly selected from the array.
+**/
 
-	function stackShuffle(n) {
+function stackShuffle(n) {
 
-		var i, j, k;
-		var temp;
+	var i, j, k;
+	var temp;
 
-		for (i=0; i<n; i++) {
-			for (j=0; j<this.cards.length; j++) {
-				k = Math.floor(Math.random() * this.cards.length);
-				temp = this.cards[j];
-				this.cards[j] = this.cards[k];
-				this.cards[k] = temp;
+	for (i=0; i<n; i++) {
+		for (j=0; j<this.cards.length; j++) {
+			k = Math.floor(Math.random() * this.cards.length);
+			temp = this.cards[j];
+			this.cards[j] = this.cards[k];
+			this.cards[k] = temp;
 
-			}
 		}
 	}
+}
 
-	/** 
-	This is the deal method that simualates dealing one card
-	from the stack/deck. The first card is removed and returned
-	to the player.
-	**/
+/** 
+This is the deal method that simualates dealing one card
+from the stack/deck. The first card is removed and returned
+to the player.
+**/
 
-	function stackDeal() {
+function stackDeal() {
 
-		if (this.cards.length > 0)
-			return this.cards.pop();
-		else
-			return null;
-	}
+	if (this.cards.length > 0)
+		return this.cards.pop();
+	else
+		return null;
+}
 
 
 
-	/** 
-	Add cards to the end of a stack's card array
-	**/
+/** 
+Add cards to the end of a stack's card array
+**/
 
-	function stackAddCard(card) {
+function stackAddCard(card) {
 
-		this.cards.push(card);
-	}
+	this.cards.push(card);
+}
 
-	// Combines stacks together
-	// Usage: stack1.combine(stack2) leaves stack with the cards
-	// and leaves stack2 empty
-	function stackCombine(stack) {
+// Combines stacks together
+// Usage: stack1.combine(stack2) leaves stack with the cards
+// and leaves stack2 empty
+function stackCombine(stack) {
 
-		this.cards = this.cards.concat(stack.cards);
-		stack.cards = new Array();
+	this.cards = this.cards.concat(stack.cards);
+	stack.cards = new Array();
 
-	}
+}
 
-	function stackCardCount() {
+function stackCardCount() {
+	
+	return this.cards.length;
+}
 
-    return this.cards.length;
-	}
+function stackRemoveCard(cardNumber, cardColor) {
 
-	function stackRemoveCard(cardNumber, cardColor) {
-
-		var cardIndex;
-		for (var i = 0; i < this.cards.length; i++) {
-				
-    		if (this.cards[i].rank == cardNumber && 
-    			this.cards[i].colors == cardColor ) {
-    				cardIndex = this.cards.indexOf(this.cards[i]);
-        			console.log('index is'+this.cards.indexOf(this.cards[i]));
-    		}
+	var cardIndex;
+	for (var i = 0; i < this.cards.length; i++) {
+			
+		if (this.cards[i].rank == cardNumber && 
+			this.cards[i].colors == cardColor ) {
+				cardIndex = this.cards.indexOf(this.cards[i]);
 		}
-		
-		var removedCard = new Card(cardNumber, cardColor);
-
-
-		return removedCard;
-
 	}
+	
+	var removedCard = new Card(cardNumber, cardColor);
+	return removedCard;
+
+}
+
+function stackClearCards() {
+	while (this.cards.length > 0) {
+        this.cards.pop();
+	}
+
+}
 
 
