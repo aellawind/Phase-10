@@ -1,6 +1,10 @@
+/*-------------------------------------------------------------------------------------------------
+General
+-------------------------------------------------------------------------------------------------*/
+
 body {
   background-color: #98AFC7;
-  background: url('/images/goldback.jpg');
+  background: url('/images/goldback.jpg') no-repeat;
   font-family: Arial, Times, sans-serif;
   font-size: 14pt;
   text-align: center;
@@ -8,8 +12,7 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-  overflow:scroll;  
-
+  overflow:auto;
 }
 
 #wrapper {
@@ -19,27 +22,9 @@ body {
   left:50%;
   top:50%;
   margin:-450px 0 0 -600px;
-  z-index:1;
-
+  z-index:0;
 }
 
-
-#gameArea {
-width:1200px;
-height:800px;
-position:absolute;
-left:50%;
-top:50%;
-margin:-390px 0 0 -600px;
-padding: 15px;
-border:0px;
-background:rgba(255,255,255, 0.8);
-background-origin:border-box;
--moz-box-shadow: 30px 30px 95px #000000;
--webkit-box-shadow: 30px 30px 95px #000000;
-box-shadow: 20px 20px 85px #000000;
-z-index:1;
-}
 
 h1 {
     font-family: 'Purple Purse', cursive;
@@ -67,8 +52,37 @@ h1 {
                0 20px 20px rgba(0,0,0,.15);
 }
 
-.error {
-  color:red;
+h2 {
+    font-family: 'Purple Purse', cursive;
+    font-weight:bold;
+    margin:0 -13px 0 0;
+    text-decoration: none;
+    word-spacing: normal;
+    text-align: center;
+    letter-spacing: 0;
+    font-size: 20pt;
+    color: #B80000 ;
+   
+}
+
+/*-------------------------------------------------------------------------------------------------
+Game general areas
+-------------------------------------------------------------------------------------------------*/
+#gameArea {
+width:1200px;
+height:800px;
+position:absolute;
+left:50%;
+top:50%;
+margin:-390px 0 0 -600px;
+padding: 15px;
+border:0px;
+background:rgba(255,255,255, 0.8);
+background-origin:border-box;
+-moz-box-shadow: 30px 30px 95px #000000;
+-webkit-box-shadow: 30px 30px 95px #000000;
+box-shadow: 20px 20px 85px #000000;
+z-index:1;
 }
 
 #screen {
@@ -77,55 +91,134 @@ h1 {
   width:100%;
   height:100%;
   opacity:0;
+  z-index:999;
+}
+
+#playgameoverlay {
+  position:fixed;
+  width:110%;
+  height:110%;
+  margin:-40px 0px 0px -40px;
+  opacity:0.7;
+  background-color:white;
+  z-index:500;
+  text-align:center;
+}
+
+
+/*-------------------------------------------------------------------------------------------------
+Buttons
+-------------------------------------------------------------------------------------------------*/
+#playbuttons {
+  position:fixed;
+  width:100%;
+  height:100%;
+  z-index:1000;
+  display: block;
+}
+
+#playgame {
+
+  position:absolute;
+  width:600px;
+  height:400px;
+  left:50%;
+  top:50%;
+  margin:-220px 0 0 -300px;
+  padding: 0;
+  -webkit-box-shadow: 10px 10px 33px 9px rgba(0,0,0,0.75);
+  -moz-box-shadow: 10px 10px 33px 9px rgba(0,0,0,0.75);
+  box-shadow: 10px 10px 33px 9px rgba(0,0,0,0.75);
+  background: #a64040;
+  border-radius: 16px 16px 16px 16px;
+  -moz-border-radius: 16px 16px 16px 16px;
+  -webkit-border-radius: 16px 16px 16px 16px;
   z-index:9999;
+  text-align:center;
+  font-family: 'Purple Purse', cursive;
+  font-weight:bold;
+  font-style:italic;
+  font-variant:small-caps;
+  text-decoration: none;
+  word-spacing: normal;
+  text-align: center;
+  letter-spacing: 0;
+  font-size: 30pt;
+  color: #B80000 ;
+    
 }
 
-/*---
-Deck draw discard station
----*/
-
-#deckPiles {
-  width:250px;
-  height:200px;
-  right:10px;
-  bottom:10px;
-  position:absolute;
-
-}
-
-#drawDeck {
-  width: 100px;
-  height: 140px;
-  background: url('/images/cardback.png');
-  background-size:100px 140px;
+#playbutton, #rulesbutton, #nextphasebutton, #readrules {
+  display:block;
   float:left;
+  -moz-box-shadow: 3px 4px 0px 0px #8a2a21;
+  -webkit-box-shadow: 3px 4px 0px 0px #8a2a21;
+  box-shadow: 3px 4px 0px 0px #8a2a21;
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #c62d1f), color-stop(1, #f24437));
+  background:-moz-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+  background:-webkit-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+  background:-o-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+  background:-ms-linear-gradient(top, #c62d1f 5%, #f24437 100%);
+  background:linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#c62d1f', endColorstr='#f24437',GradientType=0);
+  background-color:#c62d1f;
+  -moz-border-radius:18px;
+  -webkit-border-radius:18px;
+  border-radius:18px;
+  border:1px solid #d02718;
   cursor:pointer;
-  right:10px;
-  bottom:15px;
-  position:absolute;
+  color:#ffffff;
+  font-family:arial;
+  font-size:35px;
+  padding:7px 25px;
+  text-decoration:none;
+  text-shadow:0px 1px 0px #810e05;
+  position:fixed;
+  top:50%;
+  left:35%;
+  z-index:10000;
+
 }
 
-#discardDeck {
-  width: 100px;
-  height: 140px;
-  border-width:1px;
-  float:left;
-  position:absolute;
-  right:110px;
-  bottom:15px;
-}
+#readrules {
 
-#discardLockScreen {
-  width: 100px;
-  height: 140px;
-  float:left;
   position:absolute;
+  top:2%;
+  left:88%;
+  float:right;
+  font-size:10px;
   display:none;
-  z-index:3000;
+
+
+}
+
+#rulesbutton {
+  left:56%;
+  top:45%;
 }
 
 #playbutton {
-  float:left;
+  left:25%;
+  top:45%;
+}
+
+#nextphasebutton {
+
+  position:fixed;
+  font-size:17px;
+  z-index:10001;
+
+}
+
+#playbutton:hover, #rulesbutton:hover, #nextphasebutton:hover {
+  background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #f24437), color-stop(1, #c62d1f));
+  background:-moz-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+  background:-webkit-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+  background:-o-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+  background:-ms-linear-gradient(top, #f24437 5%, #c62d1f 100%);
+  background:linear-gradient(to bottom, #f24437 5%, #c62d1f 100%);
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#f24437', endColorstr='#c62d1f',GradientType=0);
+  background-color:#f24437;
 }
 
 .prepareSubmitPhase {
@@ -138,10 +231,146 @@ Deck draw discard station
   display:none;
 }
 
-/*---
-Playing Fields
----*/
 
+#submitphasebutton {
+  position: absolute; bottom:25px; right:25px;
+  display:none;
+  z-index:2;
+}
+
+#cancelphasebutton {
+  position: absolute; bottom:73px; right:25px;
+  display:none;
+  z-index:2;
+}
+
+#resetphasebutton {
+  position: absolute; bottom:49px; right:25px;
+  display:none;
+  z-index:2;
+}
+
+
+/*-------------------------------------------------------------------------------------------------
+Deck areas (deck to draw from, discard area, etc.)
+-------------------------------------------------------------------------------------------------*/
+
+#deckPiles {
+  width:250px;
+  height:200px;
+  right:10px;
+  bottom:20px;
+  position:absolute;
+
+}
+
+#drawDeck {
+  width: 110px;
+  height: 150px;
+  background: url('/images/cardbackstack.png');
+  background-size:110px 150px;
+  float:left;
+  cursor:pointer;
+  right:115px;
+  bottom:15px;
+  position:absolute;
+  display:none;
+  z-index:1;
+}
+
+#discardDeck {
+  width: 100px;
+  height: 140px;
+  border-width:1px;
+  float:left;
+  position:absolute;
+  right:110px;
+  right:10px;
+  bottom:15px;
+  bottom:15px;
+  z-index:1;
+}
+
+#discardDeck.ui-state-hover, #c1p1field.ui-state-hover{
+    box-shadow: 0px 0px 5px rgba(0,0,0,.3);
+padding:7px;
+background-color:red;
+}
+
+#lockScreen {
+  width: 240px;
+  height: 190px;
+  float:left;
+  position:absolute;
+  display:none;
+}
+
+/*-------------------------------------------------------------------------------------------------
+Phase 10 Rules Pop up
+-------------------------------------------------------------------------------------------------*/
+.overlay{
+    background: black;
+    opacity: .5;
+    position:fixed;
+    top:0px;
+    bottom:0px;
+    left:0px;
+    right:0px;
+    z-index:1000;
+}
+.box{
+    position:fixed;
+    top:-1000px;
+    left:30%;
+    right:30%;
+    background-color:#fff;
+    color:#7F7F7F;
+    padding:20px;
+    border:2px solid #ccc;
+    -moz-border-radius: 20px;
+    -webkit-border-radius:20px;
+    -khtml-border-radius:20px;
+    -moz-box-shadow: 0 1px 5px #333;
+    -webkit-box-shadow: 0 1px 5px #333;
+    z-index:1001;
+}
+a.boxclose{
+    float:right;
+    margin-top:-30px;
+    margin-right:-30px;
+    cursor:pointer;
+    color: #fff;
+    border: 1px solid #AEAEAE;
+    border-radius: 30px;
+    background: #605F61;
+    font-size: 31px;
+    font-weight: bold;
+    display: inline-block;
+    line-height: 0px;
+    padding: 11px 3px;       
+}
+
+.boxclose:before {
+    content: "X";
+
+}
+
+.box h1{
+    border-bottom: 1px dashed #7F7F7F;
+    margin:-20px -20px 0px -20px;
+    padding:10px;
+    background-color:#FFEFEF;
+    color:#EF7777;
+    -moz-border-radius:20px 20px 0px 0px;
+    -webkit-border-top-left-radius: 20px;
+    -webkit-border-top-right-radius: 20px;
+    -khtml-border-top-left-radius: 20px;
+    -khtml-border-top-right-radius: 20px;
+}
+
+/*-------------------------------------------------------------------------------------------------
+Player Playing Field Areas
+-------------------------------------------------------------------------------------------------*/
 
 .playingField {
   width:100%;
@@ -154,24 +383,24 @@ Playing Fields
 #computer1DivId {
 
   width:400px;
-  height:170px;
+  height:150px;
   z-index:2;
   position:relative;
  
 }
 
-#computer2DivId {
+#computer3DivId {
 
   width:400px;
-  height:170px;
+  height:150px;
   z-index:2;
   position:relative;
 }
 
-#computer3DivId {
+#computer2DivId {
 
   width:400px;
-  height:170px;
+  height:150px;
   z-index:2;
   position:relative;
 }
@@ -193,14 +422,14 @@ Playing Fields
 }
 
 #playerDivId div {
-  margin-right:-17px;
+  margin-right:-20px;
 }
 
 
+/*-------------------------------------------------------------------------------------------------
+Playing cards
+-------------------------------------------------------------------------------------------------*/
 
-/*--
-Card
----*/
 .card {
   background-image: url('/images/cardback.png');
   background-size:100px 140px;
@@ -209,15 +438,12 @@ Card
   top:0px;
   z-index:30;
   border:1px;
-
-  /*background-image: url("/images/backtest.gif");*/
 }
 
 
 .cardface {
   cursor:pointer;
   float:left;
-
 }
 
 
@@ -228,24 +454,31 @@ Card
 
 }
 
-/*--
-Phases
---*/
+/*-------------------------------------------------------------------------------------------------
+Phase Related such as Titles and Phase Fields
+-------------------------------------------------------------------------------------------------*/
 
 .phaseTitles {
   display:none;
+  position:absolute;
+  text-align:left;
+  padding-left:40px;
+  line-height:150px;
+  font-family: 'Purple Purse', cursive;
+    font-weight:bold;
+    margin:0 -13px 0 0;
+    text-decoration: none;
+    word-spacing: normal;
+    text-align: center;
+    letter-spacing: 0;
+    font-size: 20pt;
+    color: orange ;
 }
-
-
-/*Individual cards slots for phases*/
-
-
  
 #phaseField {
   width:100%;
-  background-color:white;
   position:absolute;
-  bottom: 210px;
+  bottom: 190px;
   display:none;
   height:200px;
   z-index:1;
@@ -253,12 +486,14 @@ Phases
 }
 
 #phaseField1 {
-  width:50%;
+  width:43%;
   height: 200px;
   z-index:1;
   float:left;
   position:relative;
   padding-left:10px;
+  padding-top:10px;
+  display:none;
 }
 
 #phaseField2 {
@@ -267,29 +502,12 @@ Phases
   z-index:1;
   float:left;
   position:relative;
-  background-color:blue;
+  display:none;
+  padding-top:10px;
 }
 
 #phaseField1 div, #phaseField2 div {
   margin-right:-60px;
-}
-
-#submitphasebutton {
-  position: absolute; bottom:25px; right:25px;
-  display:none;
-  z-index:2;
-}
-
-#cancelphasebutton {
-  position: absolute; bottom:73px; right:25px;
-  display:none;
-  z-index:2;
-}
-
-#resetphasebutton {
-  position: absolute; bottom:49px; right:25px;
-  display:none;
-  z-index:2;
 }
 
 
@@ -314,13 +532,55 @@ Phases
   float:left;
 }
 
+#computer1PhaseField {
+
+  width:390px;
+  height:300px;
+  z-index:2;
+  position:relative;
+  float:left;
+
+}
+
+#computer3PhaseField {
+ 
+  width:390px;
+  height:300px;
+  z-index:2;
+  position:relative;
+  float:left;
+
+}
+
+#computer2PhaseField {
+  width:390px;
+  height:300px;
+  z-index:2;
+  position:relative;
+  float:left;
+
+}
+
+#c1p1field, #c1p2field, #c2p1field, #c2p2field, #c3p1field, #c3p2field {
+  width:100%;
+  height:50%;
+  z-index:50;
+  margin-left:10px;
+
+}
+
+#c1p1field div, #c1p2field div, #c2p1field div, #c2p2field div, #c3p1field div, #c3p2field div {
+  margin-right:-60px;  
+}
 
 
-/* "You did it!" message */
+/*-------------------------------------------------------------------------------------------------
+"You did it!" Phase Message
+-------------------------------------------------------------------------------------------------*/
 #phaseCompleteMessage {
   position: absolute;
-  left: 580px;
-  top: 250px;
+  left: 45%;
+  top: 45%;
   width: 0;
   height: 0;
   z-index: 10000;
@@ -334,14 +594,5 @@ Phases
   box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
   padding: 20px;
   visibility:hidden;
+  
 }
-
-
-
-
-
-
-
-
-
-
