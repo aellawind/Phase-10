@@ -141,8 +141,8 @@ function cardCreateNode() {
 function Stack() {
 
     /* Allows us to use Card objects in a manner similar to how
-	   a real stack of cards is used. Creates an ordered set of cards
-	   that can be drawn from, added to, shuffled, or combined with other stacks */
+       a real stack of cards is used. Creates an ordered set of cards
+       that can be drawn from, added to, shuffled, or combined with other stacks */
 
     this.cards = new Array();
     this.makeDeck = stackMakeDeck;
@@ -172,10 +172,10 @@ function stackMakeDeck(n) {
     this.cards = new Array(n * m);
 
     /**
-	Creates an array of card objects based off of n, which is the
-	number of decks needed; then iterates over j, which is the suits,
-	then appends the skips and wilds.
-	**/
+    Creates an array of card objects based off of n, which is the
+    number of decks needed; then iterates over j, which is the suits,
+    then appends the skips and wilds.
+    **/
     for (var i = 0; i < n; i++)
         for (var j = 0; j < suits.length; j++)
             for (var k = 0; k < ranks.length; k++)

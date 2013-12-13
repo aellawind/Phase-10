@@ -106,7 +106,9 @@
 	</div>
 
 	<!-- Player playing fields -->
+	<div id="playerFieldLock"> </div>
 	<div class="playingField" id="playerDivId"></div>
+	
 
 	<!-- Section to play a phase -->
 	<div id="phaseField">

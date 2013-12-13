@@ -6,6 +6,7 @@
     also have the brains to add cards to other phases. */
 function computer_phase1function(computer_num, phase_cards) {
 
+    $('#screen').show();
     // Decide our variables depending on which computer we are.
     if (computer_num == 1) {
         var computerStack = computer1Stack;
@@ -280,17 +281,8 @@ function computerDiscard(computerStack, computerDivId, card) {
     });
 
     // Let the card be clickable
-    $(cardNode).click(function () {
-        $(cardNode).css('left', '0px');
-        $(cardNode).css('top', '0px');
+    $(cardNode).click(takeDiscard);
 
-        id = $(this).data('id');
-        moveAnimate(id, '#playerDivId');
-
-        $('#lockScreen').css('display', 'block');
-
-
-    });
 
     // Special animation function needed for the discard
     function discardAnimate(dataid, newParent) {
@@ -324,6 +316,7 @@ function computerDiscard(computerStack, computerDivId, card) {
         }, 'slow', function () {
             element.show();
             temp.remove();
+            $('#screen').css('display', 'none');
 
         });
 
@@ -332,12 +325,12 @@ function computerDiscard(computerStack, computerDivId, card) {
 }
 
 /*  Eventually when we've created all of the logic for the computer for each
-	phase, this switch function will help determine which function
-	will evaluate at each turn.
-	Functions that take in an array of cards and evaluates if they are a phase (1-10)
-	phase_cards is an array; assumes we have an array of cards and each card has card.rank = # and card.suit = color
-	When cards go into this function, we still have wilds we need to 'clean'*/
-	function checkComputerPhase(computer_phase, cards) {
+    phase, this switch function will help determine which function
+    will evaluate at each turn.
+    Functions that take in an array of cards and evaluates if they are a phase (1-10)
+    phase_cards is an array; assumes we have an array of cards and each card has card.rank = # and card.suit = color
+    When cards go into this function, we still have wilds we need to 'clean'*/
+    function checkComputerPhase(computer_phase, cards) {
     var phaseFunction;
     switch (computer_phase) {
 

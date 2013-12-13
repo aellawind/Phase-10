@@ -105,6 +105,14 @@ z-index:1;
   text-align:center;
 }
 
+#playerFieldLock {
+  width:80%;
+  height:320px;
+  float:left;
+  position:relative;
+  z-index:500;
+  background-color:blue;
+}
 
 /*-------------------------------------------------------------------------------------------------
 Buttons
@@ -302,6 +310,7 @@ background-color:red;
   height: 190px;
   float:left;
   position:absolute;
+  z-index:1000;
   display:none;
 }
 

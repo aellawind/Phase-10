@@ -43,7 +43,7 @@ $("document").ready(function () {
         $("#playbuttons").css('display', 'none');
         $("#playgameoverlay").css('display', 'none');
         $("#rulesbutton").css('display', 'none');
-        $("#submitPhasePrep").css('display', 'block');
+        $("#submitPhasePrep").css('display', 'none');
         $("#discardbutton").css('display', 'block');
         $("#drawDeck").css('display', 'block');
         $("#readrules").css('display', 'block');
@@ -51,23 +51,20 @@ $("document").ready(function () {
         newDeck(deck);
         dealDeck(deck);
 
+
         var drawCard = deck.deal();
         discardStack.addCard(drawCard);
         var node = drawCard.createNode();
         node.firstChild.style.visibility = "";
         $('#discardDeck').append(node);
-        $(node).click(takeDiscard);
-
-        $("#drawDeck").click(function () {
-            drawCard = deck.deal();
-            startTurn(drawCard);
-            $('#lockScreen').css('display', 'block');
-        });
+        $(node).click(takeDiscard); // Player has option to take from discard pile...
+        
+        $('#drawDeck').click(takeDeck); // OR player has option to take from the deck
 
         // Reset the phase field
-		$('#resetphasebutton').click(function () {
-		    resetPhase();
-		});
+        $('#resetphasebutton').click(function () {
+            resetPhase();
+        });
 
         // Allows player to sort his cards
         $("#playerDivId").sortable({
@@ -126,12 +123,23 @@ function newDeck(deck) {
 // Take a card from the discard pile
 function takeDiscard() {
 
+    console.log("Functiont ake discard");
     $(this).css('left', '0px');
     $(this).css('top', '0px');
     id = $(this).data('id');
     moveAnimate(id, '#playerDivId')
     $('#lockScreen').css('display', 'block');
+    $('#submitPhasePrep').css('display', 'block');
+    $('#playerFieldLock').css('display', 'none');
 
+}
+
+function takeDeck() {
+    drawCard = deck.deal();
+    startTurn(drawCard);
+    $('#lockScreen').css('display', 'block');
+    $('#submitPhasePrep').css('display', 'block');
+    $('#playerFieldLock').css('display', 'none');
 }
 
 // Deals out the deck to the players
@@ -195,8 +203,9 @@ function handleCardDiscard(event, ui) {
     var cardID = $(ui.draggable).data('id');
     var cardNumber = cardID.slice(5);
     var cardColor = cardID[4];
+    $("#submitPhasePrep").css('display', 'none');
 
-    $(this).css('z-index', '1');
+    /*$(this).css('z-index', '1');
     $(this).append(ui.draggable);
     $(ui.draggable).css('position', 'relative');
     $(ui.draggable).css('z-index', '100');
@@ -208,12 +217,22 @@ function handleCardDiscard(event, ui) {
 
     // Remove the card from the player's div and stack
     var discardedCard = playerStack.removeCard(cardNumber, cardColor);
-    discardStack.addCard(discardedCard);
+    discardStack.addCard(discardedCard);*/
 
-    $('#screen').show(); //don't let player do anything
-    setTimeout('computer_phase1function(1, computer1Stack.cards)', 1000);
-    setTimeout('computer_phase1function(2, computer2Stack.cards)', 2000);
-    setTimeout('computer_phase1function(3, computer3Stack.cards)', 3000);
+    ui.draggable.remove();
+    playerStack.removeCard(cardNumber, cardColor)
+    mycard = new Card(cardNumber, cardColor);
+    discardStack.addCard(mycard);
+    cardNode = mycard.createNode();
+    cardNode.firstChild.style.visibility = "";
+    $(this).append(cardNode);
+    $(cardNode).position({
+        of: $('#discardDeck'),
+        my: 'left top',
+        at: 'left top'
+    });
+    
+    runComputer();
     nextTurn();
 
 }
@@ -267,6 +286,7 @@ function nextTurn() {
 
     $('#screen').css('display', 'none');
     $('#lockScreen').css('display', 'none');
+    $('#playerFieldLock').show();
 
 }
 
@@ -319,6 +339,10 @@ function nextRound() {
 function runComputer() {
 
     $('#screen').show();
+    setTimeout('computer_phase1function(1, computer1Stack.cards)', 1000);
+    setTimeout('computer_phase1function(2, computer2Stack.cards)', 2000);
+    setTimeout('computer_phase1function(3, computer3Stack.cards)', 3000);
+    $('#screen').css('display','none');
     // This is a placeholder function to hold all of the computer turns
 }
 
