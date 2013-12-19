@@ -4,10 +4,14 @@
     card is to discard from their deck. Eventually computer will have
     brains to take from the discard pile if it helps them, and they will
     also have the brains to add cards to other phases. */
-function computer_phase1function(computer_num, phase_cards) {
+
+function computer_phase1function(computer_num) {
 
     $('#screen').show();
     // Decide our variables depending on which computer we are.
+    console.log("");
+    console.log("COMPUTER", computer_num, "IS GOING NOW.");
+
     if (computer_num == 1) {
         var computerStack = computer1Stack;
         var computerDivId = '#computer1DivId';
@@ -37,29 +41,35 @@ function computer_phase1function(computer_num, phase_cards) {
     computerDrawCard(computerStack, computerDivId);
 
     // Get an array of the best current numbers that match our phase.
-    array_best_nums = best_matches(phase_cards);
+    array_best_nums = best_matches(computerStack.cards);
+    console.log("Array of best nums is", array_best_nums);
 
-    // True means we have a phase, Wilds means we have a phase with wilds.
-    // Both are placed as phases differently.
-    if (array_best_nums[0] == "True") {
-        setTimeout(computerPlayPhase(array_best_nums, phase_cards, "False"), 1000);
+    if (phase1Stack.cardCount() ==0) {
+        // True means we have a phase, Wilds means we have a phase with wilds.
+        // Both are placed as phases differently.
+        if (array_best_nums[0] == "True") {
+            setTimeout(computerPlayPhase(array_best_nums, "False"), 1000);
+        }
+
+        if (array_best_nums[0] == "Wilds") {
+            setTimeout(computerPlayPhase(array_best_nums, "True"), 2000);
+            console.log("Cards are", computerStack.cards);
+        }
     }
 
-    if (array_best_nums[0] == "Wilds") {
-        setTimeout(computerPlayPhase(array_best_nums, phase_cards, "True"), 2000);
-    }
-
-    // COME BACK TO LATER.
-    //Eventually computers will be able to take into account other phases
+    // Computers will be able to take into account other phases
     // on the floor and add their cards to them.
+    if (phase1Stack.cardCount() > 0) {
+        setTimeout(addToOtherPhases(computerStack, computerDivId),3000);
+    }
 
     // Algorithm to get a randomly good card object to discard
-    discard_this_card = pickDiscardCard(array_best_nums, phase_cards, computerStack);
-    computerDiscard(computerStack, computerDivId, discard_this_card);
+    discard_this_card = pickDiscardCard(computerStack, array_best_nums);
+    setTimeout(computerDiscard(computerStack, computerDivId, discard_this_card),4000);
 
     // Should be set of 3 for Phase 1
-    function best_matches(phase_cards) {
-        var matched_counter = identicalCards(phase_cards);
+    function best_matches() {
+        var matched_counter = identicalCards(computerStack.cards);
         var num_sets = Object.keys(matched_counter).length;
 
         myarray = _.pairs(matched_counter);
@@ -128,11 +138,15 @@ function computer_phase1function(computer_num, phase_cards) {
     // This function takes in our array of best numbers and builds
     // a phase for playing. We remove the cards from the computer's hand
     // and virtual stack.
-    function computerPlayPhase(array_of_nums, phasecards, wilds) {
+    function computerPlayPhase(array_of_nums, wilds) {
 
-        var firstMatchSet = new Array();
-        var secondMatchSet = new Array();
-        var lasts_removed = 1;
+        var new_cards = new Array();
+        var cards_removed = 0;
+        var num_wilds = 0;
+        var num_wilds_needed1 = 0;
+        var num_wilds_needed2 = 0;
+        phase1Stack.phase = "SET";
+        phase2Stack.phase = "SET";
 
         if (wilds == "False") {
             var first_num = array_of_nums[1];
@@ -142,64 +156,34 @@ function computer_phase1function(computer_num, phase_cards) {
             var second_num = array_of_nums[3];
         }
 
-        var indexes_to_remove1 = new Array();
-        var indexes_to_remove2 = new Array();
-        for (var i = 0; i < phasecards.length; i++) {
-            if (phasecards[i].rank == first_num) {
-                firstMatchSet.push(phasecards[i]);
-                cardNode = phasecards[i].createNode();
-                cardNode.firstChild.style.visibility = "";
+        for (var i = 0; i < computerStack.cardCount(); i++) {
+            var new_card = new Card(computerStack.cards[i].rank, computerStack.cards[i].colors);
+            if (new_card.rank == first_num) {
+                phase1Stack.addCard(new_card);
+                cardNode = new_card.createNode();
+                cardNode.firstChild.style.visibility="";
                 $(phaseField1).append(cardNode);
-                indexes_to_remove1.push(i);
+                cards_removed += 1;
             }
-        }
-
-        indexes_to_remove1.sort().reverse();
-
-        for (j = 0; j < indexes_to_remove1.length; j++) {
-            var discardedCard = computerStack.removeCardIndex(indexes_to_remove1[j]);
-            phase1Stack.addCard(discardedCard);
-            var last = '#computer' + computer_num + 'DivId div:last(' + lasts_removed + ')';
-            $(last).remove();
-            lasts_removed += 1;
-        }
-
-        for (var i = 0; i < phasecards.length; i++) {
-
-            if (phasecards[i].rank == second_num) {
-                secondMatchSet.push(phasecards[i]);
-                cardNode = phasecards[i].createNode();
-                cardNode.firstChild.style.visibility = "";
+            else if (new_card.rank == second_num) {
+                phase2Stack.addCard(new_card);
+                cardNode = new_card.createNode();
+                cardNode.firstChild.style.visibility="";
                 $(phaseField2).append(cardNode);
-                indexes_to_remove2.push(i);
+                cards_removed +=1;
+            }
+            else if (new_card.rank == "W") {
+                num_wilds += 1;
+            } 
+            else {
+                new_cards.push(new_card); // create a new list of all the non matching cards
             }
         }
-
-        indexes_to_remove2.sort().reverse();
-
-        for (j = 0; j < indexes_to_remove2.length; j++) {
-            var discardedCard = computerStack.removeCardIndex(indexes_to_remove2[j]);
-            phase2Stack.addCard(discardedCard);
-            var last = '#computer' + computer_num + 'DivId div:last(' + lasts_removed + ')';
-            $(last).remove();
-            lasts_removed += 1;
-        }
-
-
-
-        var wild_indexes_to_remove = new Array();
-        for (var i = 0; i < phasecards.length; i++) {
-            if (phasecards[i].rank == "W") {
-                wild_indexes_to_remove.push(i);
-            }
-        }
-
 
         if (wilds == "True") {
-            var num_wilds_needed1 = 0;
-            var num_wilds_needed2 = 0;
-            if (firstMatchSet.length < 3) {
-                num_wilds_needed1 = 3 - firstMatchSet.length;
+            console.log("Wilds is true.");
+            if (phase1Stack.cardCount() < 3) {
+                num_wilds_needed1 = 3 - phase1Stack.cardCount();
                 for (var i = 0; i < num_wilds_needed1; i++) {
                     wildcard = new Card("W", "X");
                     cardNode = wildcard.createNode();
@@ -208,8 +192,8 @@ function computer_phase1function(computer_num, phase_cards) {
                     phase1Stack.addCard(wildcard);
                 }
             }
-            if (secondMatchSet.length < 3) {
-                num_wilds_needed2 = 3 - secondMatchSet.length;
+            if (phase2Stack.cardCount() < 3) {
+                num_wilds_needed2 = 3 - phase2Stack.cardCount();
                 for (var i = 0; i < num_wilds_needed2; i++) {
                     wildcard = new Card("W", "X");
                     cardNode = wildcard.createNode();
@@ -218,16 +202,25 @@ function computer_phase1function(computer_num, phase_cards) {
                     phase2Stack.addCard(wildcard);
                 }
             }
-            var wilds_needed = num_wilds_needed1 + num_wilds_needed2;
-            wild_indexes_to_remove.sort().reverse();
-            wilds_removed = 0;
-            for (j = 0; j < wilds_needed; j++) {
-                computerStack.removeCardIndex(wild_indexes_to_remove[j]);
-                var last = '#computer' + computer_num + 'DivId div:last(' + lasts_removed + ')';
-                $(last).remove();
-                lasts_removed += 1;
+            var wilds_left = num_wilds - num_wilds_needed1 - num_wilds_needed2;
+            for (var i = 0; i<wilds_left; i++) {
+                new_cards.push(new Card("W","X"));
             }
         }
+
+        cards_removed = cards_removed + num_wilds_needed2 + num_wilds_needed1;
+        for (var i = 1; i < cards_removed+1; i++) {
+            var last = '#computer' + computer_num + 'DivId div:last(' + i + ')';
+            $(last).remove();
+        }
+
+        console.log("New cards are", new_cards);
+        console.log("Before being cleared", computerStack);
+        console.log("the cards are", computerStack.cards)
+        computerStack.clearCards();
+        console.log("Computer stack cleared is", computerStack);
+        computerStack.addCards(new_cards); // new hand without the played phase cards
+        console.log("Computer stack with added cards is", computerStack);
     }
 }
 
@@ -239,35 +232,166 @@ function computerDrawCard(computerStack, computerDivId) {
     var node = drawCard.createNode();
     $('#drawDeck').append(node);
     id = $(node).data('id');
-    moveAnimate(id, computerDivId);
+    moveAnimate(id, computerDivId, '#drawDeck');
+}
+
+// Computer will add cards to other existing phases if possible
+function addToOtherPhases(computerStack, computerDivId) {
+
+    var array_phase_stacks = [phase1Stack, phase2Stack, c1phase1Stack, c1phase2Stack, c2phase1Stack,
+                        c2phase2Stack,c3phase1Stack, c3phase2Stack];
+
+    var current_array_stack;
+    var current_phase;
+    var current_div;
+    var new_cards = new Array();
+    
+
+    for (var j=0; j<computerStack.cardCount();j++) {
+        var card_used = "False";
+        var cur_card = computerStack.cards[j];
+        for (var i=0; i<array_phase_stacks.length; i++) {
+            current_array_stack = array_phase_stacks[i]; //the current stack we're evaluating against to place a 
+            switch (current_array_stack) {
+                case phase1Stack:  
+                    current_phase = phase1Stack.phase;
+                    current_div = '#phaseField1'; 
+                    break;        
+                case phase2Stack:
+                    current_phase = phase2Stack.phase;
+                    current_div = '#phaseField2';
+                    break;
+                case c1phase1Stack:
+                    current_phase = c1phase1Stack.phase;
+                    current_div = '#c1p1field';
+                    break;
+                case c1phase2Stack:
+                    current_phase = c1phase2Stack.phase; 
+                    current_div = '#c1p2field';
+                    break;
+                case c2phase1Stack:
+                    current_phase = c2phase1Stack.phase;
+                    current_div = '#c2p1field';
+                    break;
+                case c2phase2Stack:
+                    current_phase = c2phase2Stack.phase;
+                    current_div = '#c2p2field';
+                    break;
+                case c3phase1Stack:
+                    current_phase = c3phase1Stack.phase;
+                    current_div = '#c3p1field';
+                    break;
+                case c3phase2Stack:
+                    current_phase = c3phase2Stack.phase;
+                    current_div = '#c3p2field';
+                    break;
+            }
+        
+            if (current_array_stack.phase == "SET") {
+                //console.log("ITS A SET");
+                //console.log("cur card rank:", cur_card.rank);
+                //console.log("phase match num is", current_array_stack.matchingNumber());
+                if (cur_card.rank == current_array_stack.matchingNumber()) {
+                    var card_used = "True";
+                    console.log("MATCH: Rank is", cur_card.rank);
+                    console.log("MATCH: Matching number is", current_array_stack.matchingNumber());
+                    current_array_stack.addCard(cur_card);
+                    var node = cur_card.createNode();   
+                    $(computerDivId).append(node);
+                    id = $(node).data('id'); 
+                    moveAnimate(id, current_div, computerDivId);
+                    console.log("Moving", id, "from", computerDivId, "to", current_div);
+                    $(current_div).append($(node));
+                    node.firstChild.style.visibility = "";
+                    $(node).css('display', 'block');
+                    var last = computerDivId + ' div:last(1)';
+                    $(last).remove();
+                }
+            }
+            else if (current_array_stack.phase == "RUN") {
+                if (cur_card.rank == parseInt(current_array_stack.lastCard) + 1) {
+                    console.log("Rank is", cur_card.rank);
+                    console.log("Matching color is", cur_card.colors);
+                    current_array_stack.addCard(cur_card);
+                    var node = cur_card.createNode();
+                    //$(computerDivId).append(node);
+                    //node.firstChild.style.visibility = "";
+                    id = $(node).data('id');
+                    //moveAnimate(id, computerDivId, current_div);
+                }
+                else if (cur_card.rank == parseInt(current_array_stack.firstcard) - 1) {
+                    var card_used = "True";
+                    // check back later
+                    current_array_stack.addCard(cur_card);
+                    var node = cur_card.createNode();
+                    //$(computerDivId).append(node);
+                    //node.firstChild.style.visibility = "";
+                    id = $(node).data('id');
+                    //moveAnimate(id, computerDivId, current_div);
+                }
+            }
+            else if (current_array_stack.phase == "COLORS") {
+                if (cur_card.rank == current_array_stack.matchingColor) {
+                    var card_used = "True";
+                    current_array_stack.addCard(cur_card);
+                    var node = cur_card.createNode();
+                    //$(computerDivId).append(node);
+                    //node.firstChild.style.visibility = "";
+                    id = $(node).data('id');
+                    //moveAnimate(id, computerDivId, current_div);
+                }
+            }
+        }
+
+        if (card_used == "False") {
+            new_cards.push(cur_card);
+        }
+
+    }
+    computerStack.clearCards();
+    computerStack.addCards(new_cards);
+
+
+
+
 }
 
 //Picks a good card to discard
-function pickDiscardCard(best_nums, phase_cards, computerStack) {
-    // Returns the values that are in our phase_cards that are not in our best_nums array
-    for (i = 0; i < phase_cards.length; i++) {
-        if (_.contains(best_nums, phase_cards[i].rank)) {
+function pickDiscardCard(computerStack, best_nums) {
+    // Returns the values that are in our computer's hand that are not in our best_nums array
+    var mycard;
+    for (i = 0; i < computerStack.cardCount(); i++) {
+        console.log("I is,",i);
+        
+        if (_.contains(best_nums, computerStack.cards[i].rank)) {
             continue;
         }
-        if (phase_cards[i].rank == "W") {
+        if (computerStack.cards[i].rank == "W") {
             continue;
         } else {
-            var mycard = phase_cards[i];
-            computerStack.removeCardIndex(i);
-            return mycard;
+            mycard = computerStack.cards[i];
+            console.log("I is", i);
+            console.log("Discarded card is", mycard);
+            break;
         }
+    }
+    if (typeof mycard == 'undefined') {
+        return computerStack.cards[0];
+    }
+    else {
+        return mycard;
     }
 }
 
 // Discard a card
 function computerDiscard(computerStack, computerDivId, card) {
 
+    computerStack.removeCard(card);
     var cardNode = card.createNode();
     discardStack.addCard(card);
     var last = computerDivId + ' div:last(1)';
     $(last).remove();
     $(computerDivId).append(cardNode);
-    $(cardNode).css('z-index', '300');
 
     id = $(cardNode).data('id');
     cardNode.firstChild.style.visibility = "";
@@ -289,10 +413,7 @@ function computerDiscard(computerStack, computerDivId, card) {
 
         query_string = "[data-id='" + dataid + "']";
         el = document.querySelector(query_string);
-        console.log(query_string);
-
         element = $(el); //Allow passing in either a JQuery object or selector
-        console.log(element);
         newParent = $(newParent); //Allow passing in either a JQuery object or selector
 
         var oldOffset = element.offset();
@@ -328,41 +449,41 @@ function computerDiscard(computerStack, computerDivId, card) {
     phase, this switch function will help determine which function
     will evaluate at each turn.
     Functions that take in an array of cards and evaluates if they are a phase (1-10)
-    phase_cards is an array; assumes we have an array of cards and each card has card.rank = # and card.suit = color
+    computerStack.cards is an array; assumes we have an array of cards and each card has card.rank = # and card.suit = color
     When cards go into this function, we still have wilds we need to 'clean'*/
-    function checkComputerPhase(computer_phase, cards) {
+    function checkComputerPhase(computerStack) {
     var phaseFunction;
     switch (computer_phase) {
 
         case 1:  
-            phaseFunction = phase1function(phase_cards);
+            phaseFunction = phase1function(computerStack.cards);
             break;            
         case 2:
-            phaseFunction = phase2function(phase_cards); 
+            phaseFunction = phase2function(computerStack.cards); 
             break;    
         case 3:
-            phaseFunction = phase3function(phase_cards);
+            phaseFunction = phase3function(computerStack.cards);
             break;     
         case 4:
-            phaseFunction = phase4function(phase_cards);
+            phaseFunction = phase4function(computerStack.cards);
             break;     
         case 5:
-            phaseFunction = phase5function(phase_cards);
+            phaseFunction = phase5function(computerStack.cards);
             break;
         case 6:
-            phaseFunction = phase6function(phase_cards);
+            phaseFunction = phase6function(computerStack.cards);
             break;
         case 7:
-            phaseFunction = phase7function(phase_cards);
+            phaseFunction = phase7function(computerStack.cards);
             break;
         case 8:
-            phaseFunction = phase8function(phase_cards);
+            phaseFunction = phase8function(computerStack.cards);
             break;
         case 9:
-            phaseFunction = phase9function(phase_cards);
+            phaseFunction = phase9function(computerStack.cards);
             break;
         case 10:
-            phaseFunction = phase10function(phase_cards);
+            phaseFunction = phase10function(computerStack.cards);
             break;
     }
 

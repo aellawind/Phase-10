@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 // Reset the phase submission and send everything back to the player's hand
 function resetPhase() {
 
@@ -31,8 +20,8 @@ function resetPhase() {
 
     phase1Stack.clearCards();
     phase2Stack.clearCards();
-    $('#phaseField1').empty();
-    $('#phaseField2').empty();
+    $('#phaseField1 .card').remove();
+    $('#phaseField2 .card').remove();
 }
 
 // This phase card drop only checks to make sure a card is not a skip; otherwise accepts a card
@@ -45,14 +34,18 @@ function handlePhaseCardDrop(event, ui) {
     // Drop is only allowed if it is not a skip
     if (cardID.slice(4) != "XS") {
         // Appending visual node
-        $(this).css('z-index', '1');
-        $(ui.draggable).css('left', '0px');
-        $(ui.draggable).css('top', '0px');
-        $(this).append(ui.draggable);
-        $(ui.draggable).css('position', 'relative');
-        $(ui.draggable).css('z-index', '100');
-        ui.draggable.draggable('disable');
-        ui.draggable.draggable('option', 'revert', false);
+        //$(this).css('z-index', '1');
+        ui.draggable.remove();
+        mycard = new Card(cardNumber, cardColor);
+        cardNode = mycard.createNode();
+        cardNode.firstChild.style.visibility = "";
+        $(this).append(cardNode);
+        $(cardNode).css('left', '0px');
+        $(cardNode).css('top', '0px');
+        $(cardNode).css('position', 'relative');
+        //$(ui.draggable).css('z-index', '100');
+        // ui.draggable.draggable('disable');
+       // ui.draggable.draggable('option', 'revert', false);
 
         // Appending card ID to phaseStack and removing it from playerstack
         var discardedCard = playerStack.removeCard(cardNumber, cardColor);
@@ -64,6 +57,10 @@ function handlePhaseCardDrop(event, ui) {
         }
     }
 }
+
+
+
+
 
 // Clicking the submit phase button to reveal the submit phase field and turns the cards
 // into draggables that can go to the submit divs
@@ -93,80 +90,70 @@ $('#submitPhasePrep').click(function () {
 
     if (phase_number == 1 || phase_number == 2 || phase_number == 3 ||
         phase_number == 7 || phase_number == 9 || phase_number == 10) {
-        console.log('test');
         $('#phaseField2').css('display', 'block');
         title_id = '#phase' + player.current_phase + 'Title2';
         $(title_id).css('display', 'block');
 
     }
 
-    title_id = '#phase' + player.current_phase;
-    $('title_id').css('display', 'block');
-
     $('#submitphasebutton').css('display', 'block');
     $('#resetphasebutton').css('display', 'block');
     $('#cancelphasebutton').css('display', 'block');
 
-    $('.card').draggable({
-        disable: false,
-        revert: true,
-        stack: '#playerDivId div',
-    });
+    
 });
 
 // When user clicks to submit their phase, we check to see if it is a phase
 $('#submitphasebutton').click(function () {
-    submit_phase_array = new Array();
-    if (phase2Stack.cardCount() > 0) {
-        submit_phase_array.push(phase1Stack.cards);
-        submit_phase_array.push(phase2Stack.cards); // combining into one array for simpler processing
-    } else {
-        submit_phase_array = phase1Stack.cards;
+    if (phase2Stack.cardCount() == 0 || phase1Stack.cardCount() ==0) {
+        alert('Please place cards to submit.')
     }
+    else {
+        submit_phase_array = new Array();
+        if (phase2Stack.cardCount() > 0) {
+            submit_phase_array.push(phase1Stack.cards);
+            submit_phase_array.push(phase2Stack.cards); // combining into one array for simpler processing
+        } else {
+            submit_phase_array = phase1Stack.cards;
+        }
 
-    var isPhase = checkPhase(player.current_phase, submit_phase_array);
+        var isPhase = checkPhase(player.current_phase, submit_phase_array);
 
-    if (isPhase == "True") {
-        $('#screen').show();
-        showPhaseCompleteMessage();
-        //player.current_phase += 1;
-    } else {
-        alert('Sorry, that is not a phase.'); // Make this more informative later
-        resetPhase();
+        if (isPhase == "True") {
+            player.current_phase += 1;
+            $('#submitphasebutton').css('display', 'none');
+            $('#resetphasebutton').css('display', 'none');
+            $('#cancelphasebutton').css('display', 'none');
+            $('.prepareSubmitPhase').css('display', 'none');
+
+            // Player can now add to other player's fields!
+            $("#c1p1field, #c1p2field, #c2p1field, #c2p2field, #c3p1field, #c3p2field, #phaseField1, #phaseField2").droppable({
+                accept: "#playerDivId div",
+                hoverClass: "ui-state-hover",
+                drop: addToPhase
+            });
+            // Just in case they got rid of all their cards, we check, to see if we should
+            // Move them on to the next phase
+            if (playerStack.cardCount() == 0) {
+                showRoundCompleteMessage();
+            }
+        } else {
+            alert('Sorry, that is not a phase.'); // Make this more informative later
+            resetPhase();
+        }
     }
 });
 
 // User decides they don't have a phase, so we can hide the phase fields again
 $('#cancelphasebutton').click(function () {
     var cur_id = '#submitPhase' + player.current_phase;
-    //console.log(cur_id);
     $(cur_id).css('display', 'block');
     $('#phaseField').css('display', 'none');
-    $('#phase1Title1').css('display', 'none');
-    $('#phase1Title2').css('display', 'none');
     $('#submitphasebutton').css('display', 'none');
     $('#resetphasebutton').css('display', 'none');
     $('#cancelphasebutton').css('display', 'none');
     $('.prepareSubmitPhase').css('display', 'block');
 
-    $('.card').removeClass("ui-draggable");
-
-    // Allows player to sort his cards again
-    $("#playerDivId").sortable({
-        connectWith: '#c1p1field, #c1p2field, #c2p1field, #c2p2field, #c3p1field, #c3p2field, #discardDeck'
-    }).disableSelection();
-
-    $("#discardDeck").droppable({
-        accept: "#playerDivId div",
-        hoverClass: "ui-state-hover",
-        drop: handleCardDiscard
-    });
-
-    $("#c1p1field, #c1p2field, #c2p1field, #c2p2field, #c3p1field, #c3p2field").droppable({
-        accept: "#playerDivId div",
-        hoverClass: "ui-state-hover",
-        drop: addToPhase
-    });
 
     resetPhase();
 
@@ -176,27 +163,25 @@ $('#cancelphasebutton').click(function () {
 // Useful for checking the computer's cards for duplicate cards to play a phase
 function get_consecutive_card_sequences(cards) {
     var sorted_cards = [];
-    var sorted_cards_array = new Array();
 
-    for (i = 0; i < cards.length; i++) {
-        //console.log(cards[i]);
-        sorted_cards.push([cards[i], cards[i].rank]);
-    }
-    sorted_cards.sort(function (a, b) {
-        return a[1] - b[1];
+    sorted_cards = _.map(cards, function(card) {
+       return new Card(card.rank, card.colors);
     });
 
+    sorted_cards.sort(function (a, b) {
+        return a.rank - b.rank;
+    });
 
     var result = [];
-    var current = [sorted_cards[0][0]];
-    var number = sorted_cards[0][0].rank;
+    var current = [sorted_cards[0]];
+    var number = sorted_cards[0].rank;
     for (var i = 0; i < sorted_cards.length; ++i) {
 
-        var cur_card = sorted_cards[i][0];
+        var cur_card = sorted_cards[i];
         num1 = parseInt(number) + 1;
         if (cur_card.rank == number) {
             continue;
-        } else if (cur_card.rank == num1) {
+        } else if (parseInt(cur_card.rank) == num1) {
             current.push(cur_card);
             number = cur_card.rank;
         } else {
@@ -207,22 +192,25 @@ function get_consecutive_card_sequences(cards) {
             number = cur_card.rank;
         }
     }
-
+    if (current.length > 1) {
+        result.push(current);
+    }
     //Returns an array of array of cards that are consecutive
     return result;
 }
 
-function showPhaseCompleteMessage() {
+function showRoundCompleteMessage() {
 
-    $('#phaseCompleteMessage').css('visibility', 'visible');
-    $('#phaseCompleteMessage').animate({
-        left: '380px',
-        top: '200px',
-        width: '500px',
-        height: '500px',
-        opacity: 1
+    console.log("Function working");
+    $('#completeoverlay').fadeIn(200, function () {
+        $('#roundCompleteMessage').animate({
+            'top': '80px'
+        }, 200);
     });
+    return false;
 }
+
+
 
 // Currently returns a dictionary with each unique card and how many times it appears in the array
 // Useful for checking the computer's cards for duplicate cards to play a phase
@@ -235,7 +223,7 @@ function  identicalCards (phase_cards) {
         counter[key] = (counter[key] || 0) + 1;
     });
 
-    console.log(counter);
+    //console.log("Identical cards counter:", counter);
     return counter;
 
 
@@ -429,6 +417,8 @@ var phase1function = function (phase_cards) {
         num_sets_2 == 1 && second_set.length > 2) {
 
         console.log("Phase 1 function is true");
+        phase1Stack.phase = "SET";
+        phase2Stack.phase = "SET";
         return "True";
     } else {
         return "False";
@@ -437,13 +427,19 @@ var phase1function = function (phase_cards) {
 
 var phase2function = function (phase_cards) {
     var first_set = makeMatches(phase_cards[0]); // Should be set of 3
+    console.log("First set is", first_set);
     var second_set = makeRuns(phase_cards[1]); // Should be run of 4
+    console.log("Second set is", second_set);
     var num_sets_1 = Object.keys(identicalCards(first_set)).length;
-    var num_consecutive_seq = get_consecutive_card_sequences(phase_cards).length;
+    console.log("num sets 1", num_sets_1);
+    var num_consecutive_seq = get_consecutive_card_sequences(second_set).length;
+    console.log("num consecutive sequences", num_consecutive_seq)
 
     if (num_sets_1 == 1 && first_set.length > 2) {
         if (num_consecutive_seq == 1 && second_set.length > 3) {
-            return True;
+            phase1Stack.phase = "SET";
+            phase2Stack.phase = "RUN";
+            return "True";
         }
     } else {
         return "False";
@@ -459,7 +455,9 @@ var phase3function = function (phase_cards) {
 
     if (num_sets_1 == 1 && first_set.length > 3) {
         if (num_consecutive_seq == 1 && second_set.length > 3) {
-            return True;
+            phase1Stack.phase = "SET";
+            phase2Stack.phase = "RUN";
+            return "True";
         }
     } else {
         return "False";
@@ -471,7 +469,8 @@ var phase4function = function (phase_cards) {
     var num_consecutive_seq = get_consecutive_card_sequences(phase_cards).length;
 
     if (num_consecutive_seq == 1 && second_set.length > 6) {
-        return True;
+        phase1Stack.phase = "RUN";
+        return "True";
     } else {
         return "False";
     }
@@ -482,7 +481,7 @@ var phase5function = function (phase_cards) {
     var num_consecutive_seq = get_consecutive_card_sequences(phase_cards).length;
 
     if (num_consecutive_seq == 1 && second_set.length > 7) {
-        return True;
+        return "True";
     } else {
         return "False";
     }
@@ -493,7 +492,7 @@ var phase6function = function (phase_cards) {
     var num_consecutive_seq = get_consecutive_card_sequences(phase_cards).length;
 
     if (num_consecutive_seq == 1 && second_set.length > 8) {
-        return True;
+        return "True";
     } else {
         return "False";
     }

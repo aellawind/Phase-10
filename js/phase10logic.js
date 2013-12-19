@@ -1,5 +1,8 @@
 $("document").ready(function () {
 
+    // Preload card images
+    preloadImages(cardPath, cardPics, cardWidth, cardHeight);
+
     // Globals
     deck = new Stack;
     numPacks = 2;
@@ -33,6 +36,7 @@ $("document").ready(function () {
     nodesCreated = 0;
 
     // Upon page load, display buttons for rules and game play
+    //$("#rulesbutton").click(showRules);
     $("#rulesbutton").click(showRules);
     $('#boxclose').click(closeBox);
 
@@ -52,6 +56,7 @@ $("document").ready(function () {
         dealDeck(deck);
 
 
+        
         var drawCard = deck.deal();
         discardStack.addCard(drawCard);
         var node = drawCard.createNode();
@@ -68,7 +73,7 @@ $("document").ready(function () {
 
         // Allows player to sort his cards
         $("#playerDivId").sortable({
-            connectWith: '#c1p1field, #c1p2field, #c2p1field, #c2p2field, #c3p1field, #c3p2field, #discardDeck'
+            connectWith: '#phaseField1, #phaseField2, #c1p1field, #c1p2field, #c2p1field, #c2p2field, #c3p1field, #c3p2field, #discardDeck'
         }).disableSelection();
 
         $("#discardDeck").droppable({
@@ -77,11 +82,7 @@ $("document").ready(function () {
             drop: handleCardDiscard
         });
 
-        $("#c1p1field, #c1p2field, #c2p1field, #c2p2field, #c3p1field, #c3p2field").droppable({
-            accept: "#playerDivId div",
-            hoverClass: "ui-state-hover",
-            drop: addToPhase
-        });
+        
     });
 
 });
@@ -123,16 +124,50 @@ function newDeck(deck) {
 // Take a card from the discard pile
 function takeDiscard() {
 
-    console.log("Functiont ake discard");
+    console.log("Function take discard");
     $(this).css('left', '0px');
     $(this).css('top', '0px');
     id = $(this).data('id');
-    moveAnimate(id, '#playerDivId')
+    moveAnimate(id, '#playerDivId', '#discardDeck');
     $('#lockScreen').css('display', 'block');
     $('#submitPhasePrep').css('display', 'block');
     $('#playerFieldLock').css('display', 'none');
 
 }
+
+//Animation function
+function moveAnimate(dataid, newParent, oldParent) {
+
+    query_string = "[data-id='" + dataid + "']";
+    el = document.querySelector(query_string);
+    console.log(query_string);
+
+    element = $(el); //Allow passing in either a JQuery object or selector
+    oldparent = $(oldParent);
+    newParent = $(newParent); //Allow passing in either a JQuery object or selector
+
+    var oldOffset = oldparent.offset();
+    newParent.append(element);
+    var newOffset = element.offset();
+
+    var temp = element.clone().appendTo('body');
+    temp.css('position', 'absolute')
+        .css('left', oldOffset.left)
+        .css('top', oldOffset.top)
+        .css('zIndex', 1000);
+    element.hide();
+    temp.animate({
+        'top': newOffset.top,
+        'left': newOffset.left
+    }, 'slow', function () {
+        element.show();
+        temp.remove();
+
+    });
+
+}
+
+
 
 function takeDeck() {
     drawCard = deck.deal();
@@ -187,8 +222,14 @@ function startTurn(drawCard) {
     console.log('Turn started.');
     playerStack.addCard(drawCard);
     node = drawCard.createNode();
+    id = $(node).data('id');
     node.firstChild.style.visibility = "";
-    $('#playerDivId').append(node);
+    //$('#playerDivId').append(node);
+    $('#drawDeck').append(node);
+    moveAnimate(id, '#playerDivId', '#drawDeck');
+    console.log(computer1Stack.cards);
+    console.log(computer2Stack.cards);
+    console.log(computer3Stack.cards);
 
 }
 
@@ -220,7 +261,10 @@ function handleCardDiscard(event, ui) {
     discardStack.addCard(discardedCard);*/
 
     ui.draggable.remove();
-    playerStack.removeCard(cardNumber, cardColor)
+    playerStack.removeCard(cardNumber, cardColor);
+    for (var i = 0; i< playerStack.cardCount(); i++) {
+        console.log("The player's card:", playerStack.cards[i].rank, playerStack.cards[i].colors);
+    }
     mycard = new Card(cardNumber, cardColor);
     discardStack.addCard(mycard);
     cardNode = mycard.createNode();
@@ -232,8 +276,13 @@ function handleCardDiscard(event, ui) {
         at: 'left top'
     });
     
-    runComputer();
-    nextTurn();
+    if (playerStack.cardCount() == 0) {
+        showRoundCompleteMessage();
+    }
+    else {
+        runComputer();
+        nextTurn();
+    }
 
 }
 
@@ -256,11 +305,14 @@ function addToPhase(event, ui) {
         phaseStack = c3phase1Stack;
     } else if ($(this).attr("id") == "c3p2field") {
         phaseStack = c3phase2Stack;
+    } else if ($(this).attr("id") == "phaseField1") {
+        phaseStack = phase1Stack;
+    } else if ($(this).attr("id") == "phaseField2") {
+        phaseStack = phase2Stack;
     }
-    console.log(phaseStack);
+
     var cardnum;
     for (i = 0; i < phaseStack.cardCount(); i++) {
-        console.log(phaseStack.cards[i]);
         if (phaseStack.cards[i].rank != "W") {
             cardnum = phaseStack.cards[i].rank;
             break;
@@ -269,13 +321,17 @@ function addToPhase(event, ui) {
 
     console.log('cardnum is', cardnum);
     console.log('cardnumber is', cardNumber);
-    if (cardNumber == cardnum) {
+    if (cardNumber == cardnum || cardNumber == "W") {
         ui.draggable.remove();
         playerStack.removeCard(cardNumber, cardColor)
         mycard = new Card(cardNumber, cardColor);
         cardNode = mycard.createNode();
         cardNode.firstChild.style.visibility = "";
         $(this).prepend(cardNode);
+
+        if (playerStack.cardCount() == 0) {
+            showRoundCompleteMessage();
+        }
     }
 
 }
@@ -293,17 +349,31 @@ function nextTurn() {
 // Restarts the next round
 function nextRound() {
 
+    //Hide the win screen again
+    $('#roundCompleteMessage').animate({
+        'top': '-2000px'
+    }, 500, function () {
+        $('#completeoverlay').fadeOut('fast');
+    });
+    
+
     $('#screen').css('display', 'none');
     $('#phaseCompleteMessage').css('visibility', 'hidden');
 
     //player.current_phase += 1;
-    //console.log(player.current_phase);
+    console.log(player.current_phase);
     deck.clearCards();
     discardStack.clearCards();
     computer1Stack.clearCards();
     computer2Stack.clearCards();
     computer3Stack.clearCards();
     playerStack.clearCards();
+    c1phase1Stack.clearCards();
+    c1phase2Stack.clearCards();
+    c2phase1Stack.clearCards();
+    c2phase2Stack.clearCards();
+    c3phase1Stack.clearCards();
+    c3phase2Stack.clearCards();
 
     $('#playerDivId').empty();
     $('#computer1DivId').empty();
@@ -339,44 +409,13 @@ function nextRound() {
 function runComputer() {
 
     $('#screen').show();
-    setTimeout('computer_phase1function(1, computer1Stack.cards)', 1000);
-    setTimeout('computer_phase1function(2, computer2Stack.cards)', 2000);
-    setTimeout('computer_phase1function(3, computer3Stack.cards)', 3000);
+    setTimeout('computer_phase1function(1)', 1000);
+    setTimeout('computer_phase1function(2)', 2000);
+    setTimeout('computer_phase1function(3)', 3000);
     $('#screen').css('display','none');
     // This is a placeholder function to hold all of the computer turns
 }
 
-//Animation function
-function moveAnimate(dataid, newParent) {
-
-    query_string = "[data-id='" + dataid + "']";
-    el = document.querySelector(query_string);
-    console.log(query_string);
-
-    element = $(el); //Allow passing in either a JQuery object or selector
-    console.log(element);
-    newParent = $(newParent); //Allow passing in either a JQuery object or selector
-
-    var oldOffset = element.offset();
-    newParent.append(element);
-    var newOffset = element.offset();
-
-    var temp = element.clone().appendTo('body');
-    temp.css('position', 'absolute')
-        .css('left', oldOffset.left)
-        .css('top', oldOffset.top)
-        .css('zIndex', 1000);
-    element.hide();
-    temp.animate({
-        'top': newOffset.top,
-        'left': newOffset.left
-    }, 'slow', function () {
-        element.show();
-        temp.remove();
-
-    });
-
-}
 
 
 

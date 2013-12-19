@@ -16,12 +16,12 @@ body {
 }
 
 #wrapper {
-  width:1200px;
-  height:900px;
-  position:absolute;
+  width:900px;
+  height:700px;
+  position:fixed;
   left:50%;
   top:50%;
-  margin:-450px 0 0 -600px;
+  margin:-410px 0 0 -450px;
   z-index:0;
 }
 
@@ -66,15 +66,15 @@ h2 {
 }
 
 /*-------------------------------------------------------------------------------------------------
-Game general areas
+Game general areas and lock screens to block users
 -------------------------------------------------------------------------------------------------*/
 #gameArea {
-width:1200px;
-height:800px;
+width:900px;
+height:700px;
 position:absolute;
 left:50%;
 top:50%;
-margin:-390px 0 0 -600px;
+margin:-290px 0 0 -450px;
 padding: 15px;
 border:0px;
 background:rgba(255,255,255, 0.8);
@@ -111,7 +111,23 @@ z-index:1;
   float:left;
   position:relative;
   z-index:500;
-  background-color:blue;
+}
+
+
+#lockScreen {
+  width: 220px;
+  height: 190px;
+  float:left;
+  position:absolute;
+  z-index:1000;
+  display:none;
+}
+
+#computerLockScreen {
+  width:100%;
+  height:50%;
+  position:absolute;
+  z-index:4000;
 }
 
 /*-------------------------------------------------------------------------------------------------
@@ -156,7 +172,8 @@ Buttons
     
 }
 
-#playbutton, #rulesbutton, #nextphasebutton, #readrules {
+#playbutton, #rulesbutton, #nextphasebutton, #readrules, .prepareSubmitPhase, 
+#submitphasebutton, #cancelphasebutton, #resetphasebutton  {
   display:block;
   float:left;
   -moz-box-shadow: 3px 4px 0px 0px #8a2a21;
@@ -194,8 +211,9 @@ Buttons
   top:2%;
   left:88%;
   float:right;
-  font-size:10px;
+  font-size:15px;
   display:none;
+  color:#C0C0C0;
 
 
 }
@@ -212,9 +230,13 @@ Buttons
 
 #nextphasebutton {
 
-  position:fixed;
+  position:relative;
   font-size:17px;
   z-index:10001;
+  top:0;
+  left:38%;
+  float:none;
+  text-align:center;
 
 }
 
@@ -229,9 +251,15 @@ Buttons
   background-color:#f24437;
 }
 
-.prepareSubmitPhase {
-  float:left;
+.prepareSubmitPhase, #submitphasebutton, #cancelphasebutton, #resetphasebutton {
+  float:right;
+  position:absolute;
+  right:10px;
+  margin-right:10px;
+  left:78%;
+  top:70%;
   display:none;
+  font-size:10px;
 }
 
 #discardbutton {
@@ -241,21 +269,18 @@ Buttons
 
 
 #submitphasebutton {
-  position: absolute; bottom:25px; right:25px;
-  display:none;
-  z-index:2;
+  top:0%;
+  right:5%;
 }
 
 #cancelphasebutton {
-  position: absolute; bottom:73px; right:25px;
-  display:none;
-  z-index:2;
+  top:60%;
+  right:5%;
 }
 
 #resetphasebutton {
-  position: absolute; bottom:49px; right:25px;
-  display:none;
-  z-index:2;
+  right:5%;
+  top: 30%;
 }
 
 
@@ -264,8 +289,8 @@ Deck areas (deck to draw from, discard area, etc.)
 -------------------------------------------------------------------------------------------------*/
 
 #deckPiles {
-  width:250px;
-  height:200px;
+  width:200px;
+  height:150px;
   right:10px;
   bottom:20px;
   position:absolute;
@@ -273,13 +298,13 @@ Deck areas (deck to draw from, discard area, etc.)
 }
 
 #drawDeck {
-  width: 110px;
-  height: 150px;
+  width: 93px;
+  height: 130px;
   background: url('/images/cardbackstack.png');
-  background-size:110px 150px;
+  background-size:93px 130px;
   float:left;
   cursor:pointer;
-  right:115px;
+  right:100px;
   bottom:15px;
   position:absolute;
   display:none;
@@ -287,8 +312,8 @@ Deck areas (deck to draw from, discard area, etc.)
 }
 
 #discardDeck {
-  width: 100px;
-  height: 140px;
+  width: 85px;
+  height: 119px;
   border-width:1px;
   float:left;
   position:absolute;
@@ -301,18 +326,10 @@ Deck areas (deck to draw from, discard area, etc.)
 
 #discardDeck.ui-state-hover, #c1p1field.ui-state-hover{
     box-shadow: 0px 0px 5px rgba(0,0,0,.3);
-padding:7px;
-background-color:red;
+  padding:7px;
+
 }
 
-#lockScreen {
-  width: 240px;
-  height: 190px;
-  float:left;
-  position:absolute;
-  z-index:1000;
-  display:none;
-}
 
 /*-------------------------------------------------------------------------------------------------
 Phase 10 Rules Pop up
@@ -326,12 +343,13 @@ Phase 10 Rules Pop up
     left:0px;
     right:0px;
     z-index:1000;
+    display:none;
 }
 .box{
     position:fixed;
-    top:-1000px;
-    left:30%;
-    right:30%;
+    top:-2000%;
+    left:20%;
+    right:20%;
     background-color:#fff;
     color:#7F7F7F;
     padding:20px;
@@ -378,6 +396,16 @@ a.boxclose{
 }
 
 /*-------------------------------------------------------------------------------------------------
+"You did it!" Phase Message
+-------------------------------------------------------------------------------------------------*/
+#roundCompleteMessage {
+  width:600px;
+  height:500px;
+  left:25%;
+  right:25%;
+}
+
+/*-------------------------------------------------------------------------------------------------
 Player Playing Field Areas
 -------------------------------------------------------------------------------------------------*/
 
@@ -391,8 +419,8 @@ Player Playing Field Areas
 
 #computer1DivId {
 
-  width:400px;
-  height:150px;
+  width:300px;
+  height:125px;
   z-index:2;
   position:relative;
  
@@ -400,29 +428,29 @@ Player Playing Field Areas
 
 #computer3DivId {
 
-  width:400px;
-  height:150px;
+  width:300px;
+  height:125px;
   z-index:2;
   position:relative;
 }
 
 #computer2DivId {
 
-  width:400px;
-  height:150px;
+  width:300px;
+  height:125px;
   z-index:2;
   position:relative;
 }
 
 #computer1DivId div, #computer2DivId div, #computer3DivId div {
 
-  margin-right:-73px;
+  margin-right:-64px;
 }
 
 #playerDivId {
  
-  width:1000px;
-  height:170px;
+  width:700px;
+  height:130px;
   z-index:2;
   left:10px;
   bottom:30px;
@@ -431,7 +459,7 @@ Player Playing Field Areas
 }
 
 #playerDivId div {
-  margin-right:-20px;
+  margin-right:-25px;
 }
 
 
@@ -441,7 +469,7 @@ Playing cards
 
 .card {
   background-image: url('/images/cardback.png');
-  background-size:100px 140px;
+  background-size:85px 119px;
   float:left;
   position:relative;
   top:0px;
@@ -472,7 +500,7 @@ Phase Related such as Titles and Phase Fields
   position:absolute;
   text-align:left;
   padding-left:40px;
-  line-height:150px;
+  line-height:130px;
   font-family: 'Purple Purse', cursive;
     font-weight:bold;
     margin:0 -13px 0 0;
@@ -487,16 +515,16 @@ Phase Related such as Titles and Phase Fields
 #phaseField {
   width:100%;
   position:absolute;
-  bottom: 190px;
+  bottom: 160px;
   display:none;
-  height:200px;
+  height:150px;
   z-index:1;
 
 }
 
 #phaseField1 {
   width:43%;
-  height: 200px;
+  height: 150px;
   z-index:1;
   float:left;
   position:relative;
@@ -507,7 +535,7 @@ Phase Related such as Titles and Phase Fields
 
 #phaseField2 {
   width:48%;
-  height:200px;
+  height:150px;
   z-index:1;
   float:left;
   position:relative;
@@ -543,8 +571,8 @@ Phase Related such as Titles and Phase Fields
 
 #computer1PhaseField {
 
-  width:390px;
-  height:300px;
+  width:290px;
+  height:245px;
   z-index:2;
   position:relative;
   float:left;
@@ -553,8 +581,8 @@ Phase Related such as Titles and Phase Fields
 
 #computer3PhaseField {
  
-  width:390px;
-  height:300px;
+  width:290px;
+  height:245px;
   z-index:2;
   position:relative;
   float:left;
@@ -562,8 +590,8 @@ Phase Related such as Titles and Phase Fields
 }
 
 #computer2PhaseField {
-  width:390px;
-  height:300px;
+  width:290px;
+  height:245px;
   z-index:2;
   position:relative;
   float:left;
@@ -583,25 +611,3 @@ Phase Related such as Titles and Phase Fields
 }
 
 
-/*-------------------------------------------------------------------------------------------------
-"You did it!" Phase Message
--------------------------------------------------------------------------------------------------*/
-#phaseCompleteMessage {
-  position: absolute;
-  left: 45%;
-  top: 45%;
-  width: 0;
-  height: 0;
-  z-index: 10000;
-  background: #dfd;
-  border: 2px solid #333;
-  -moz-border-radius: 10px;
-  -webkit-border-radius: 10px;
-  border-radius: 10px;
-  -moz-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-  -webkit-box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-  box-shadow: .3em .3em .5em rgba(0, 0, 0, .8);
-  padding: 20px;
-  visibility:hidden;
-  
-}

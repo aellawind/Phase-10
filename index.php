@@ -4,7 +4,6 @@
 	<title>Amira's Phase 10</title>
 	<link rel="shortcut icon" href="images/phase10.ico"/>
 	
-	<link rel="stylesheet" href="css/cards.css" type="text/css">
 	<link rel="stylesheet" href="css/game.css" type="text/css">
 	<link href='http://fonts.googleapis.com/css?family=Purple+Purse' rel='stylesheet' type='text/css'>
 
@@ -26,18 +25,20 @@
 
 
 <!--When users want to see the rules, this pop ups-->
-<div class="overlay" id="overlay" style="display:none;"></div> 
+<div class="overlay" id="overlay"></div> 
 <div class="box" id="box">
 	<a class="boxclose" id="boxclose"></a>
 	<h1>Phase 10 Rules</h1>
 
 	<p>Welcome to Amira's version of Phase 10! Currently you can only play
 	the first phase. This is a work in progress. I will be building out the game
-	so players can play all 10 phases. Good luck!</p>
-	<p>At the start of your turn, you will draw a card. The goal is to 
+	so players can play all 10 phases. Apologies-this is a fairly complex game. Have fun!</p>
+	<p>At the start of your turn, you will draw a card, either from the deck or the discard pile if you choose. 
+	The goal is to 
 	complete your phase first and subsequently get rid of all of your 
 	cards by adding them to your current phases or to the other 
-	player's phases. Wilds can be used to replace any card, and
+	player's phases (you cannot add to another player's phase until you've made your own. 
+	Wilds can be used to replace any card, and
 	skips can be used to skip another player's turn (note: skips not implemented yet).</p>
 	<p>Each round ends when a player has run out of cards. When the 
 	next turn begins, each player will work on completing their next
@@ -64,20 +65,22 @@
 	<p>All card images drawn by Amira Anuar.</p>
 </div>
 
-
+<!-- Round complete! -->
+<div class="overlay" id="completeoverlay"></div> 
+<div class="box" id="roundCompleteMessage">
+<h2>Phase Complete!</h2>
+	<br><br>
+	<img src="http://vector-magz.com/wp-content/uploads/2013/07/great-job-clip-art.gif" alt="Good job!"/>
+	<br>
+	<button id="nextphasebutton" onclick="nextRound()">Play Next Phase!</button>
+</div>
 
 <!-- do-not-click screen; activated when we don't want the user to be able to click on anything -->
 <div id='screen'></div>
 
-<div id="phaseCompleteMessage">
-	<h2>Phase Complete!</h2>
-	<img src="http://vector-magz.com/wp-content/uploads/2013/07/great-job-clip-art.gif" alt="Good job!"/>
-	<button id="nextphasebutton" onclick="nextRound()">Play Next Phase!</button>
-</div>
-
 <div id="wrapper">
 	<h1>Phase 10</h1>
-	<button  id="readrules" onclick="showRules()">Read the Rules</button>
+	<button  id="readrules" onclick="showRules()">Rules</button>
 
 	<div id="gameArea">
 
@@ -89,6 +92,7 @@
 	<div class="playingField" id="computer1DivId"></div>
 
 	<!-- Computer phase fields -->
+	<div id="computerLockScreen"></div>	
 	<div id="computer1PhaseField"><div class ="phaseFields" id="c1p1field"></div><div class ="phaseFields" id="c1p2field"></div></div>
 	<div id="computer2PhaseField"><div class ="phaseFields" id="c2p1field"></div><div class ="phaseFields" id="c2p2field"></div></div>
 	<div id="computer3PhaseField"><div class ="phaseFields" id="c3p1field"></div><div class ="phaseFields" id="c3p2field"></div></div>

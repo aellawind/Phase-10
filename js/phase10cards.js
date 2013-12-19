@@ -118,8 +118,8 @@ function cardCreateNode() {
 
     // For the image of the card, which is hidden until we need to see it
     imgNode = document.createElement("IMG");
-    imgNode.height = "140";
-    imgNode.width = "100";
+    imgNode.height = "119";
+    imgNode.width = "85";
     imgNode.className = "cardface";
     imgNode.style.visibility = "hidden";
 
@@ -154,7 +154,57 @@ function Stack() {
     this.removeCard = stackRemoveCard;
     this.removeCardIndex = stackRemoveCardIndex;
     this.clearCards = stackClearCards;
+    this.addCards = addCards;
 
+    // For phase analyzation purposes 
+    this.matchingColor =  stackMatchingColor; //returns 'False' if there's no matching color
+    this.matchingNumber =  stackMatchingNumber; //returns 'False' if there's no matching number
+    this.firstCard = firstCard; //the first card of the cards array
+    this.lastCard = lastCard; //the last card of cards array
+    this.phase = null; 
+
+}
+
+function firstCard() {
+    if (this.cardCount == 0) {
+        return NULL
+    }
+    else {
+        return this.cards[0];
+    }
+}
+
+function lastCard() {
+    if (this.cardCount() == 0) {
+        return NULL
+    }
+    else {
+        return this.cards[this.cards.length-1];
+    }
+}
+
+function stackMatchingColor() {
+
+    var phase_set = makeColors(this.cards); // Turns wilds into the right colors
+    var num_sets = Object.keys(sameColorCards(phase_set)).length; // Processes number of relevant sets
+    if (num_sets == 1) {
+        return this.cards[0].colors;
+    }
+    else {
+        return "False";
+    }
+}
+
+
+function stackMatchingNumber() {
+    var phase_set = makeMatches(this.cards); // Turns wilds into the right numbers
+    var num_sets = Object.keys(identicalCards(phase_set)).length; // Processes number of relevant sets
+    if (num_sets == 1) {
+        return this.cards[0].rank;
+    }
+    else {
+        return "False";
+    }
 }
 
 
@@ -252,6 +302,14 @@ function stackCombine(stack) {
 
 }
 
+function addCards(addcards) {
+
+    for(var i = 0; i < addcards.length; i++) {
+        this.cards.push(addcards[i]);
+    }
+
+}
+
 function stackCardCount() {
 
     return this.cards.length;
@@ -269,7 +327,10 @@ function stackRemoveCard(cardNumber, cardColor) {
     }
 
     var removedCard = new Card(cardNumber, cardColor);
+
+    console.log("Removing card:", removedCard );
     this.cards.splice(cardIndex, 1);
+    console.log("And now after the splice, we have:", this.cards);
     return removedCard;
 
 }
@@ -296,11 +357,12 @@ function stackClearCards() {
     NOTE: ALL images were made by AMIRA ANUAR in photoshop **/
 
 var cardPath = "/images/";
-var cardWidth = 100;
-var cardHeight = 140;
+var cardWidth = 85;
+var cardHeight = 119;
 
 var cardPics = new Array(
     "cardback.png",
+    "cardbackstack.png",
     "1B.png",
     "1G.png",
     "1R.png",
@@ -364,7 +426,6 @@ var cardPics = new Array(
     "SX.png",
     "WX.png");
 
-var myPics = preloadImages(cardPath, cardPics, cardWidth, cardHeight);
 
 function preloadImages(path, pics, width, height) {
 
