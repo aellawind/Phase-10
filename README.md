@@ -1,4 +1,4 @@
-p3.amiraanuar.com
+Phase 10
 =================
 
-Third project for Harvard's CS-15 Dynamic Web Applications course! Phase 10 Game.
+This project utilizes JavaScript, jQuery, and CSS/HTML to recreate an online version of the popular card game, Phase 10.
